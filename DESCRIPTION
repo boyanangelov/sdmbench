@@ -1,0 +1,34 @@
+Package: sdmbench
+Type: Package
+Title: Benchmark Species Distribution Models
+Version: 0.1.0
+Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
+  role = c("aut", "cre"))
+Maintainer: Boyan Angelov <boyan.angelov@gmail.com>
+Description: This package provides tools and functions to benchmark Species Distribution Models (SDMs).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Depends: R (>= 3.4.4)
+Imports:
+    dismo,
+    dplyr,
+    ENMeval,
+    keras,
+    maptools,
+    mlr,
+    raster,
+    recipes,
+    rgbif,
+    rsample,
+    scrubr,
+    shiny,
+    shinydashboard,
+    shinyjs,
+    tidyr,
+    yardstick
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

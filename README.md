@@ -13,7 +13,8 @@ The end result of a `sdmbench` SDM analysis is to determine the model - data pro
 ## Installation
 
 ```r
-devtools::install_github("boyanangelov/sdmbench")
+# add build_vignettes = TRUE if you want the package vignette
+devtools::install_github("boyanangelov/sdmbench") 
 library(sdmbench)
 ```
 
@@ -22,6 +23,21 @@ A good starting point to discover the package functionality is to start the GUI:
 ```r
 # start browser-based GUI
 run_sdmbench()
+```
+
+GUI screenshots:
+
+![](vignettes/gui_screenshots/screenshot_1.png)
+&nbsp;
+![](vignettes/gui_screenshots/screenshot_2.png)
+
+## Vignette
+
+A thorough introduction to the package is available as a vignette in the package, and [online](https://boyanangelov.com/materials/sdmbench_vignette.html).
+
+```r
+# open vignette
+vignette("sdmbench")
 ```
 
 ## Tests

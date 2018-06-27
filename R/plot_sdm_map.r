@@ -27,7 +27,12 @@ plot_sdm_map <- function(raster_data, bmr_models, model_id, model_iteration) {
         model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model
         pr <- dismo::predict(raster_data, model, fun = customPredictFunXGB)
         raster::plot(pr, main = model_id)
-    } else {
+    } else if (model_id == "classif.ksvm") {
+        model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model
+        pr <- dismo::predict(raster_data, model, fun = customPredictFunKSVM)
+        raster::plot(pr, main = model_id)
+    }
+    else {
         model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model
         pr <- dismo::predict(raster_data, model, fun = customPredictFun)
         raster::plot(pr, main = model_id)

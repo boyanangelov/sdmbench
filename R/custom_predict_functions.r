@@ -1,4 +1,4 @@
-#' Custom function for dismo prediction
+#' Custom functions for dismo prediction
 #'
 #' @param model MLR trained model
 #' @param data Occurence data
@@ -19,7 +19,7 @@ customPredictFunLogreg <- function(model, data) {
 
 customPredictFunGBM <- function(model, data) {
     v <- predict(model, data, type = "response", n.trees = model$n.trees)
-    v <-  (v-min(v))/(max(v)-min(v))
+    v <-  (v - min(v))/(max(v) - min(v))
     return(1 - v)
 }
 
@@ -39,4 +39,11 @@ customPredictFunXGB <- function(model, data) {
     data <- data.matrix(data)
     v <- predict(model, data)
     return(v)
+}
+
+customPredictFunKSVM <- function(model, data) {
+    v <- raster::predict(model, data, type = "prob")
+    v <- as.data.frame(v)
+    colnames(v) <- c("absence", "presence")
+    return(v$presence)
 }

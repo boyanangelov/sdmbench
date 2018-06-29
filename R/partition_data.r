@@ -8,7 +8,7 @@
 #'
 #' @return A dataframe partitionined using the selected method.
 #' @examples
-#' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$bioclim_data, method = "block")
+#' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$climate_variables, method = "block")
 partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "default") {
         result_dataset <- dataset
@@ -29,8 +29,8 @@ partition_data <- function(dataset_raster, dataset, env, method) {
                                              bg.coords = dataset_raster$background,
                                              aggregation.factor = 5)
         nk <- length(unique(check1$occ.grp))
-        pres <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$coords_presence))
-        bg <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$background))
+        pres <- as.data.frame(raster::extract(dataset_raster$climate_variables, dataset_raster$coords_presence))
+        bg <- as.data.frame(raster::extract(dataset_raster$climate_variables, dataset_raster$background))
 
 
         for (k in 1:nk) {
@@ -78,8 +78,8 @@ partition_data <- function(dataset_raster, dataset, env, method) {
                                              aggregation.factor = c(5, 5))
 
         nk <- length(unique(check2$occ.grp))
-        pres <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$coords_presence))
-        bg <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$background))
+        pres <- as.data.frame(raster::extract(dataset_raster$climate_variables, dataset_raster$coords_presence))
+        bg <- as.data.frame(raster::extract(dataset_raster$climate_variables, dataset_raster$background))
 
         for (k in 1:nk) {
             train_val <- pres[check2$occ.grp != k, , drop = FALSE]

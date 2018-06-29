@@ -7,7 +7,7 @@
 #'
 #' @return A plot, showing the species distribution.
 #' @examples
-#' plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4]) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
+#' plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4]) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 plot_sdm_map <- function(raster_data, bmr_models, model_id, model_iteration) {
     if (model_id == "classif.logreg") {
         model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model

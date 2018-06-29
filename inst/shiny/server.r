@@ -15,16 +15,21 @@ server <- function(input, output) {
         progress <- shiny::Progress$new()
 
         progress$set(message = "Status", value = 0)
-        progress$inc(1/4, detail = "Downloading species occurence data and bioclim variables...")
+        progress$inc(1/4, detail = "Downloading species occurence data and climate variables...")
 
         benchmarking_data <- get_benchmarking_data(scientific_name = input$text,
-                                                   limit = input$limit)
+                                                   limit = input$limit,
+                                                   climate_type = input$climate_type,
+                                                   climate_resolution = input$climate_resolution,
+                                                   projected_model = input$projected_model,
+                                                   rcp = input$rcp,
+                                                   year = input$years)
 
         progress$inc(1/4, detail = "Processing data...")
 
         benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data,
                                                    dataset = benchmarking_data$df_data,
-                                                   env = benchmarking_data$raster_data$bioclim_data,
+                                                   env = benchmarking_data$raster_data$climate_variables,
                                                    method = input$data_partitioning_type)
 
         progress$inc(1/4, detail = "Plotting map...")
@@ -34,7 +39,7 @@ server <- function(input, output) {
         output$species_name <- renderText(input$text)
 
 
-        output$occ_map <- renderPlot(raster::plot(benchmarking_data$raster_data$bioclim_data, 1) +
+        output$occ_map <- renderPlot(raster::plot(benchmarking_data$raster_data$climate_variables, 1) +
                                          points(benchmarking_data$raster_data$coords_presence,
                                                 col = "red", cex=1.15, pch = 10) +
                                          raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
@@ -81,55 +86,55 @@ server <- function(input, output) {
         bmr_models <- mlr::getBMRModels(bmr)
         best_results <- get_best_model_results(bmr)
 
-        output$model_map_1 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_1 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[1],
                                                     model_iteration = best_results$iter[1]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
 
-        output$model_map_2 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_2 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[2],
                                                     model_iteration = best_results$iter[2]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
 
-        output$model_map_3 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_3 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[3],
                                                     model_iteration = best_results$iter[3]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
 
-        output$model_map_4 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_4 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[4],
                                                     model_iteration = best_results$iter[4]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_5 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_5 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[5],
                                                       model_iteration = best_results$iter[5]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_6 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_6 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[6],
                                                       model_iteration = best_results$iter[6]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_7 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_7 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[7],
                                                       model_iteration = best_results$iter[7]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_8 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_8 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[8],
                                                       model_iteration = best_results$iter[8]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_9 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_9 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[9],
                                                       model_iteration = best_results$iter[9]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_10 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+        output$model_map_10 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[10],
                                                       model_iteration = best_results$iter[10]) +
@@ -192,7 +197,7 @@ server <- function(input, output) {
         }
 
         output$dl_auc<- renderText(paste("AUC: ", get_dl_auc(keras_evaluation)))
-        output$dl_map <- renderPlot(plot_dl_map(raster_data = v$data$raster_data$bioclim_data,
+        output$dl_map <- renderPlot(plot_dl_map(raster_data = v$data$raster_data$climate_variables,
                                                 keras_model = keras_results$model,
                                                 custom_fun = temp_fun)+
                                         raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))

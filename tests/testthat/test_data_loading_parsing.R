@@ -5,13 +5,13 @@ result <- get_benchmarking_data("Lynx lynx", limit = 1000)
 
 test_that("Data is downloaded", {
     expect_is(result$df_data, "data.frame")
-    expect_is(result$raster_data$bioclim_data, "RasterBrick")
+    expect_is(result$raster_data$climate_variables, "RasterBrick")
     expect_equal(dim(result$df_data), c(11000, 20))
 })
 
 result$df_data <- partition_data(result$raster_data,
                                 result$df_data,
-                                result$raster_data$bioclim_data,
+                                result$raster_data$climate_variables,
                                 method = "checkerboard1")
 
 test_that("Data is parsed", {

@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 wc10
+cmip5
 inst/doc
 /development
 sdmbench_gh.Rproj

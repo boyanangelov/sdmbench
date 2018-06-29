@@ -5,7 +5,7 @@ result <- get_benchmarking_data("Lynx lynx")
 partitioning_type <- "checkerboard1"
 result$df_data <- partition_data(result$raster_data,
                                 result$df_data,
-                                result$raster_data$bioclim_data,
+                                result$raster_data$climate_variables,
                                 partitioning_type)
 result_dl <- prepare_dl_data(result$df_data, partitioning_type)
 

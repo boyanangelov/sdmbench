@@ -45,7 +45,7 @@ On the website there is also a list describing the variables, but for ease of ac
 |BIO18| Precipitation of Warmest Quarter |
 |BIO19| Precipitation of Coldest Quarter |
 
-Other variables can also be used in SDM[^5], but in order to be able to compare across species `sdmbench` is using the Bioclim features exclusively.
+To model the effects of climate change into the future we can use the [CMIP5 dataset](http://worldclim.org/CMIP5v1). For more information on how to do that in `sdmbench` consult the documentation: `?get_benchmarking_data`. In this vignette we will be relying on current bioclim features exclusively, but the workflow for CMIP5 is very similar.
 
 ## Motivation
 
@@ -80,7 +80,7 @@ As a first step we need to download the occurence data and the associated enviro
 As parameters for this function we need to specify the scientific name of the species, how many maximum occurences we want and the resolution of the environmental data. Note that if you are running this for the first time, a folder called `wc10`[^3] will be created in the working directory. This process can also take a while the first time since the data is downloaded. Under the hood `sdmbench` also uses the [scrubr](https://github.com/ropensci/scrubr) package to clean up the occurences.
 
 ```{r}
-benchmarking_data <- get_benchmarking_data("Ornithorhynchus anatinus", limit = 1200, bioclim_resolution = 10)
+benchmarking_data <- get_benchmarking_data("Ornithorhynchus anatinus", limit = 1200, climate_resolution = 10)
 ```
 
 The `benchmarking_data` list contains several datasets which we need for benchmarking. Let's have a look at each one.
@@ -97,7 +97,7 @@ It is a good practice to plot data before further analysis. In this way data err
 
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
 data("wrld_simpl", package = "maptools")
-raster::plot(benchmarking_data$raster_data$bioclim_data$bio1, main = "Bio1 (Annual Mean Temperature)", legend=FALSE) +
+raster::plot(benchmarking_data$raster_data$climate_variables$bio1, main = "Bio1 (Annual Mean Temperature)", legend=FALSE) +
                                          points(benchmarking_data$raster_data$coords_presence,
                                                 col = "red", cex=0.75, pch = 10) +
                                          raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
@@ -105,7 +105,7 @@ raster::plot(benchmarking_data$raster_data$bioclim_data$bio1, main = "Bio1 (Annu
 ```
 
 ```{r fig.height=4, fig.width=4}
-raster::plot(benchmarking_data$raster_data$bioclim_data$bio2, main = "Bio2 (Mean Diurnal Range)", legend=FALSE) +
+raster::plot(benchmarking_data$raster_data$climate_variables$bio2, main = "Bio2 (Mean Diurnal Range)", legend=FALSE) +
                                          points(benchmarking_data$raster_data$coords_presence,
                                                 col = "red", cex=0.75, pch = 10) +
                                          raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
@@ -113,7 +113,7 @@ raster::plot(benchmarking_data$raster_data$bioclim_data$bio2, main = "Bio2 (Mean
 
 
 ```{r fig.height=4, fig.width=4}
-raster::plot(benchmarking_data$raster_data$bioclim_data$bio4, main = "Bio4 (Temperature Seasonality)", legend=FALSE) +
+raster::plot(benchmarking_data$raster_data$climate_variables$bio4, main = "Bio4 (Temperature Seasonality)", legend=FALSE) +
                                          points(benchmarking_data$raster_data$coords_presence,
                                                 col = "red", cex=0.75, pch = 10) +
                                          raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
@@ -128,7 +128,7 @@ Next we should partition the data in a way that is meaningful for training SDMs.
 ```{r}
 benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data,
                                             dataset = benchmarking_data$df_data,
-                                            env = benchmarking_data$raster_data$bioclim_data,
+                                            env = benchmarking_data$raster_data$climate_variables,
                                             method = "block")
 ```
 
@@ -181,23 +181,23 @@ Here we can see that `randomForest` is the best performing algorithm. This dataf
 
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
 bmr_models <- mlr::getBMRModels(bmr)
-plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[1],
                                                     model_iteration = best_results$iter[1]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[2],
                                                     model_iteration = best_results$iter[2]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
     raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[3],
                                                     model_iteration = best_results$iter[3]) +
                                              raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data,
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[4],
                                                     model_iteration = best_results$iter[4]) +
@@ -276,7 +276,7 @@ temp_fun <- function(model, input_data) {
             v <- keras::predict_proba(object = model, x = as.matrix(data))
             as.vector(v)
         }
-plot_dl_map(benchmarking_data$raster_data$bioclim_data, keras_results$model, custom_fun = temp_fun) +
+plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun) +
                                          raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 ```
 

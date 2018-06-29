@@ -5,14 +5,23 @@
 \title{Download data for benchmarking}
 \usage{
 get_benchmarking_data(scientific_name, limit = 1000,
-  bioclim_resolution = 10)
+  climate_type = "default", climate_resolution = 10,
+  projected_model = "BC", rcp = 45, year = 50)
 }
 \arguments{
 \item{scientific_name}{A character string indicating scientific species name.}
 
 \item{limit}{A numeric value indicating maximum number of occurence records requested.}
 
-\item{bioclim_resolution}{A numeric vlaue indicating the resolution of the raster Bioclim variables.}
+\item{climate_type}{A character string indicating type of climate variables, either "default" for current climate or "future" for CMIP5 projections.}
+
+\item{climate_resolution}{A numeric vlaue indicating the resolution of the raster environmental variables.}
+
+\item{projected_model}{A character string indicates the type of future climate projection.}
+
+\item{rcp}{A numeric value indicating representative concentration pathways.}
+
+\item{year}{A numeric value indicating the number of years into the future for projection.}
 }
 \value{
 A list containing the downloaded datasets.
@@ -21,5 +30,5 @@ A list containing the downloaded datasets.
 Download data for benchmarking
 }
 \examples{
-result.data <- get_benchmarking_data("Lynx lynx", limit = 1500, bioclim_resolution = 10)
+result.data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 }

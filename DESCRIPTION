@@ -1,11 +1,12 @@
 Package: sdmbench
 Type: Package
 Title: Benchmark Species Distribution Models
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Boyan Angelov <boyan.angelov@gmail.com>
 Description: This package provides tools and functions to benchmark Species Distribution Models (SDMs).
+    In addition to domain specific tools, a GUI is provided as an easier interface.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -7,13 +7,16 @@
 evaluate_dl(model_keras, input_data)
 }
 \arguments{
-\item{model_keras}{Keras deep learning model}
+\item{model_keras}{Keras deep learning model.}
 
-\item{input_data}{Data parsed in a suitable way by using the  \code{\link{prepare_dl_data}} function.}
+\item{input_data}{A dataframe containing occurence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.}
 }
 \value{
-A table containing the model estimates
+A tibble containing the model estimates.
 }
 \description{
-Evaluate deep learning model performance
+A function to evaluate a deep learning model.
+}
+\examples{
+keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 }

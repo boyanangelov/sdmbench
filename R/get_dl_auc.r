@@ -1,11 +1,13 @@
 #' Extract AUC from keras evaluation
 #'
-#' @param keras_evaluation Table containing the keras evaluation
+#' @param keras_evaluation A table containing the keras evaluation.
 #'
-#' @return AUC of the tested keras model
+#' @return A numeric value indicating the AUC of the tested keras model.
+#' @examples
+#' keras_auc <- get_dl_auc(keras_evaluation)
 get_dl_auc <- function(keras_evaluation) {
     keras_auc <- keras_evaluation %>%
         yardstick::pr_auc(truth, class_prob)
 
-    return(keras_auc)
+    return(round(keras_auc, 3))
 }

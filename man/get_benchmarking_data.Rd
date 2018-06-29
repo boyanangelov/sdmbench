@@ -8,14 +8,14 @@ get_benchmarking_data(scientific_name, limit = 1000,
   bioclim_resolution = 10)
 }
 \arguments{
-\item{scientific_name}{Scientific species name}
+\item{scientific_name}{A character string indicating scientific species name.}
 
-\item{limit}{Maximum number of occurence records requested}
+\item{limit}{A numeric value indicating maximum number of occurence records requested.}
 
-\item{bioclim_resolution}{Resolution of the raster Bioclim variables}
+\item{bioclim_resolution}{A numeric vlaue indicating the resolution of the raster Bioclim variables.}
 }
 \value{
-A list containing all the data
+A list containing the downloaded datasets.
 }
 \description{
 Download data for benchmarking

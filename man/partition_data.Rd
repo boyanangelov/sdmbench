@@ -2,22 +2,25 @@
 % Please edit documentation in R/partition_data.r
 \name{partition_data}
 \alias{partition_data}
-\title{Partition data in order to avoid spatial auto correlation}
+\title{Partition spatial data}
 \usage{
 partition_data(dataset_raster, dataset, env, method)
 }
 \arguments{
-\item{dataset_raster}{Raster data}
+\item{dataset_raster}{A raster dataset.}
 
-\item{dataset}{Dataframe containing species occurences}
+\item{dataset}{A dataframe containing species occurences.}
 
-\item{env}{Raster bioclim variables}
+\item{env}{A raster dataset containing the Bioclim variables.}
 
-\item{method}{Desired partitioning method}
+\item{method}{A character string representing the desired spatial partitioning method.}
 }
 \value{
-Dataframe partitionined using the selected method
+A dataframe partitionined using the selected method.
 }
 \description{
-Partition data in order to avoid spatial auto correlation
+A function that partitions spatial data in order to avoid spatial autocorrelation.
+}
+\examples{
+benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$bioclim_data, method = "block")
 }

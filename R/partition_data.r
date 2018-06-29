@@ -1,11 +1,14 @@
-#' Partition data in order to avoid spatial auto correlation
+#' Partition spatial data
 #'
-#' @param dataset_raster Raster data
-#' @param dataset Dataframe containing species occurences
-#' @param env Raster bioclim variables
-#' @param method Desired partitioning method
+#' A function that partitions spatial data in order to avoid spatial autocorrelation.
+#' @param dataset_raster A raster dataset.
+#' @param dataset A dataframe containing species occurences.
+#' @param env A raster dataset containing the Bioclim variables.
+#' @param method A character string representing the desired spatial partitioning method.
 #'
-#' @return Dataframe partitionined using the selected method
+#' @return A dataframe partitionined using the selected method.
+#' @examples
+#' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$bioclim_data, method = "block")
 partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "default") {
         result_dataset <- dataset
@@ -14,6 +17,7 @@ partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "block") {
         blocks <- ENMeval::get.block(occ = dataset_raster$coords_presence,
                                      bg.coords = dataset_raster$background)
+        # the blocks_vector is used for partitioning during benchmarking
         blocks_vector <- c(blocks$occ.grp, blocks$bg.grp)
         result_dataset <- dataset
         result_dataset$grp <- blocks_vector
@@ -28,7 +32,7 @@ partition_data <- function(dataset_raster, dataset, env, method) {
         pres <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$coords_presence))
         bg <- as.data.frame(raster::extract(dataset_raster$bioclim_data, dataset_raster$background))
 
-        # NOTE add attribution
+
         for (k in 1:nk) {
             train_val <- pres[check1$occ.grp != k, , drop = FALSE]
             test_val <- pres[check1$occ.grp == k, , drop = FALSE]
@@ -41,6 +45,7 @@ partition_data <- function(dataset_raster, dataset, env, method) {
 
         result_dataset <- rbind(train_val, test_val, bg_val)
 
+        # sample from background points
         bg_rows <- as.integer(row.names(result_dataset)[result_dataset$grp == "bg"])
         bg_rows_idx <- sample.int(length(bg_rows), size = 1/2 * length(bg_rows))
 
@@ -52,12 +57,12 @@ partition_data <- function(dataset_raster, dataset, env, method) {
         grp2_indeces <- as.integer(row.names(result_dataset)[result_dataset$grp == "test"])
         grp2_indeces <- c(grp2_indeces, bg_rows_test)
 
-        # use train test splits
+        # use custom splitting
         where <- match(row.names(result_dataset), grp1_indeces)
         where <- ifelse(is.na(where), 1, 0)
         result_dataset$grp_checkerboard <- where
 
-        # construct final dataframe
+        # construct label
         result_dataset$grp_checkerboard <- as.factor(result_dataset$grp_checkerboard)
         result_dataset$label <- ifelse(result_dataset$grp != "bg", 1, 0)
         result_dataset$label <- as.factor(result_dataset$label)
@@ -88,7 +93,6 @@ partition_data <- function(dataset_raster, dataset, env, method) {
 
         result_dataset <- rbind(train_val, test_val, bg_val)
 
-
         bg_rows <- as.integer(row.names(result_dataset)[result_dataset$grp == "bg"])
         bg_rows_idx <- sample.int(length(bg_rows), size = 1/2 * length(bg_rows))
 
@@ -100,12 +104,10 @@ partition_data <- function(dataset_raster, dataset, env, method) {
         grp2_indeces <- as.integer(row.names(result_dataset)[result_dataset$grp == "test"])
         grp2_indeces <- c(grp2_indeces, bg_rows_test)
 
-        # use train test splits
         where <- match(row.names(result_dataset), grp1_indeces)
         where <- ifelse(is.na(where), 1, 0)
         result_dataset$grp_checkerboard <- where
 
-        # construct final dataframe
         result_dataset$grp_checkerboard <- as.factor(result_dataset$grp_checkerboard)
         result_dataset$label <- ifelse(result_dataset$grp != "bg", 1, 0)
         result_dataset$label <- as.factor(result_dataset$label)

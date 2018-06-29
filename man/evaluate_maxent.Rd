@@ -7,13 +7,16 @@
 evaluate_maxent(raster_data, method)
 }
 \arguments{
-\item{raster_data}{A raster dataset}
+\item{raster_data}{A raster dataset.}
 
-\item{method}{Partitioning method.}
+\item{method}{A character string indicating the spatial data partitioning method.}
 }
 \value{
-List containing AUC value and predict object (for plotting)
+A list containing AUC value and predict object (for plotting).
 }
 \description{
 Evaluate MaxEnt model performance
+}
+\examples{
+maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
 }

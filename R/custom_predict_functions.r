@@ -1,10 +1,10 @@
 #' Custom functions for dismo prediction
 #'
-#' @param model MLR trained model
-#' @param data Occurence data
+#' A collection of functions that enable the usage of mlr model predictions with dismo.
+#' @param model MLR trained model.
+#' @param data A dataframe containing occurence data.
 #'
-#' @return Vector with predictions
-#'
+#' @return A vector with predictions.
 customPredictFun <- function(model, data) {
     v <- predict(model, data, type = "prob")
     v <- as.data.frame(v)
@@ -19,6 +19,7 @@ customPredictFunLogreg <- function(model, data) {
 
 customPredictFunGBM <- function(model, data) {
     v <- predict(model, data, type = "response", n.trees = model$n.trees)
+    # scale results
     v <-  (v - min(v))/(max(v) - min(v))
     return(1 - v)
 }

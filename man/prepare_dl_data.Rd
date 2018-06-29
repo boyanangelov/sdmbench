@@ -2,18 +2,21 @@
 % Please edit documentation in R/prepare_dl_data.r
 \name{prepare_dl_data}
 \alias{prepare_dl_data}
-\title{Parse data for it to be suitable for deep learning modeling}
+\title{Parse data for deep learning model training}
 \usage{
 prepare_dl_data(input_data, partitioning_type)
 }
 \arguments{
-\item{input_data}{Input dataframe}
+\item{input_data}{A dataframe containing the input data.}
 
-\item{partitioning_type}{Desired data partitioning type}
+\item{partitioning_type}{A character string indicating the desired spatial data partitioning method.}
 }
 \value{
-Parsed dataframe
+A dataframe containing the prepared data.
 }
 \description{
-Parse data for it to be suitable for deep learning modeling
+Parse data for deep learning model training
+}
+\examples{
+benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
 }

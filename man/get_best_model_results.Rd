@@ -7,11 +7,14 @@
 get_best_model_results(bmr)
 }
 \arguments{
-\item{bmr}{BMR object, result of the \code{\link{benchmark_sdm}} function.}
+\item{bmr}{A bmr object, result of the \code{\link{benchmark_sdm}} function.}
 }
 \value{
-Dataframe containing the best model results
+A dataframe containing the best model results (learner name, optimal iteration number and associated AUC).
 }
 \description{
 Extract best model performances
+}
+\examples{
+best_results <- get_best_model_results(bmr)
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/custom_predict_functions.r
 \name{customPredictFun}
 \alias{customPredictFun}
-\title{Custom function for dismo prediction}
+\title{Custom functions for dismo prediction}
 \usage{
 customPredictFun(model, data)
 }
 \arguments{
-\item{model}{MLR trained model}
+\item{model}{MLR trained model.}
 
-\item{data}{Occurence data}
+\item{data}{A dataframe containing occurence data.}
 }
 \value{
-Vector with predictions
+A vector with predictions.
 }
 \description{
-Custom function for dismo prediction
+A collection of functions that enable the usage of mlr model predictions with dismo.
 }

@@ -1,10 +1,13 @@
-#' Plot SDM map from deep learning predictions
+#' Plot deep learning SDM map
 #'
-#' @param raster_data Raster dataset containing the data
-#' @param keras_model Trained deep learning model
-#' @param custom_fun Custom predict function to enable the prediction
+#' A function that enables the plotting of deep learning predictions on a map.
+#' @param raster_data A raster dataset containing the occurence data.
+#' @param keras_model A trained deep learning model.
+#' @param custom_fun A custom predict function.
 #'
-#' @return Plot of SDM
+#' @return A plot, showing the species distribution.
+#' @examples
+#' plot_dl_map(benchmarking_data$raster_data$bioclim_data, keras_results$model, custom_fun = temp_fun) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 plot_dl_map <- function(raster_data, keras_model, custom_fun) {
     pr <- dismo::predict(raster_data, keras_model, fun = custom_fun)
     raster::plot(pr, main = "DLSDM Map")

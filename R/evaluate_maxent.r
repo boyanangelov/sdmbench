@@ -1,9 +1,11 @@
 #' Evaluate MaxEnt model performance
 #'
-#' @param raster_data A raster dataset
-#' @param method Partitioning method.
+#' @param raster_data A raster dataset.
+#' @param method A character string indicating the spatial data partitioning method.
 #'
-#' @return List containing AUC value and predict object (for plotting)
+#' @return A list containing AUC value and predict object (for plotting).
+#' @examples
+#' maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
 evaluate_maxent <- function(raster_data, method) {
     eval <- ENMeval::ENMevaluate(occ = raster_data$coords_presence,
                                  env = raster_data$bioclim_data,

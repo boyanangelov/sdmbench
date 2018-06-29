@@ -7,11 +7,14 @@
 get_dl_auc(keras_evaluation)
 }
 \arguments{
-\item{keras_evaluation}{Table containing the keras evaluation}
+\item{keras_evaluation}{A table containing the keras evaluation.}
 }
 \value{
-AUC of the tested keras model
+A numeric value indicating the AUC of the tested keras model.
 }
 \description{
 Extract AUC from keras evaluation
+}
+\examples{
+keras_auc <- get_dl_auc(keras_evaluation)
 }

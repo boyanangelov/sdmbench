@@ -1,6 +1,6 @@
 #' Start sdmbench GUI
 #'
-#' @return Shiny app object
+#' @return A shiny app object
 run_sdmbench <- function() {
     app_path <- system.file("shiny", package = "sdmbench")
     return(shiny::runApp(app_path, launch.browser = TRUE))

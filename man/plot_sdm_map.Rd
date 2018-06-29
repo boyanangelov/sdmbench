@@ -7,17 +7,20 @@
 plot_sdm_map(raster_data, bmr_models, model_id, model_iteration)
 }
 \arguments{
-\item{raster_data}{Raster data}
+\item{raster_data}{A raster dataset containing the occurence data.}
 
-\item{bmr_models}{Models extracted from the benchmarking bmr object}
+\item{bmr_models}{A list of models extracted from the benchmarking bmr object.}
 
-\item{model_id}{The model id of interest}
+\item{model_id}{A character string indicating the model id of interest.}
 
-\item{model_iteration}{The model iteration of interesst}
+\item{model_iteration}{A numeric vlaue indicating the model iteration of interest.}
 }
 \value{
-SDM Map plot
+A plot, showing the species distribution.
 }
 \description{
 Plot SDM map
+}
+\examples{
+plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4]) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 }

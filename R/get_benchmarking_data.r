@@ -1,10 +1,10 @@
 #' Download data for benchmarking
 #'
-#' @param scientific_name Scientific species name
-#' @param limit Maximum number of occurence records requested
-#' @param bioclim_resolution Resolution of the raster Bioclim variables
+#' @param scientific_name A character string indicating scientific species name.
+#' @param limit A numeric value indicating maximum number of occurence records requested.
+#' @param bioclim_resolution A numeric vlaue indicating the resolution of the raster Bioclim variables.
 #'
-#' @return A list containing all the data
+#' @return A list containing the downloaded datasets.
 #'
 #' @examples
 #' result.data <- get_benchmarking_data("Lynx lynx", limit = 1500, bioclim_resolution = 10)

@@ -2,20 +2,23 @@
 % Please edit documentation in R/plot_dl_map.r
 \name{plot_dl_map}
 \alias{plot_dl_map}
-\title{Plot SDM map from deep learning predictions}
+\title{Plot deep learning SDM map}
 \usage{
 plot_dl_map(raster_data, keras_model, custom_fun)
 }
 \arguments{
-\item{raster_data}{Raster dataset containing the data}
+\item{raster_data}{A raster dataset containing the occurence data.}
 
-\item{keras_model}{Trained deep learning model}
+\item{keras_model}{A trained deep learning model.}
 
-\item{custom_fun}{Custom predict function to enable the prediction}
+\item{custom_fun}{A custom predict function.}
 }
 \value{
-Plot of SDM
+A plot, showing the species distribution.
 }
 \description{
-Plot SDM map from deep learning predictions
+A function that enables the plotting of deep learning predictions on a map.
+}
+\examples{
+plot_dl_map(benchmarking_data$raster_data$bioclim_data, keras_results$model, custom_fun = temp_fun) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 }

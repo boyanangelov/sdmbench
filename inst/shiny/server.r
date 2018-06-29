@@ -191,7 +191,7 @@ server <- function(input, output) {
             as.vector(v)
         }
 
-        output$dl_auc<- renderText(get_dl_auc(keras_evaluation))
+        output$dl_auc<- renderText(paste("AUC: ", get_dl_auc(keras_evaluation)))
         output$dl_map <- renderPlot(plot_dl_map(raster_data = v$data$raster_data$bioclim_data,
                                                 keras_model = keras_results$model,
                                                 custom_fun = temp_fun)+

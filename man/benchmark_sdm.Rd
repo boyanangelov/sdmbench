@@ -2,23 +2,26 @@
 % Please edit documentation in R/benchmark_sdm.r
 \name{benchmark_sdm}
 \alias{benchmark_sdm}
-\title{Benchmark regular machine learning models}
+\title{Benchmark regular models}
 \usage{
 benchmark_sdm(benchmarking_data, learners, dataset_type = "default",
   sample = FALSE)
 }
 \arguments{
-\item{benchmarking_data}{Dataframe from the output of \code{\link{get_benchmarking_data}} function.}
+\item{benchmarking_data}{A dataframe from the output of \code{\link{get_benchmarking_data}} function.}
 
-\item{learners}{MLR learner objects}
+\item{learners}{A list of mlr learner objects.}
 
-\item{dataset_type}{Partitioning method}
+\item{dataset_type}{A character string indicating spatial partitioning method.}
 
-\item{sample}{Logical value to indicate whether benchmarking should be done on an undersampled dataset}
+\item{sample}{Logical. Indicates whether benchmarking should be done on an undersampled dataset.}
 }
 \value{
-Benchmarking object (bmr class)
+Benchmarking object (class bmr).
 }
 \description{
-Benchmark regular machine learning models
+A function to benchmark a collection of regular machine learning models.
+}
+\examples{
+bmr <- benchmark_sdm(benchmarking_data$df_data, learners = learners, dataset_type = "block", sample = FALSE)
 }

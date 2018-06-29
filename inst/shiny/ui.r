@@ -122,8 +122,9 @@ dashboardPage(skin = "green",
                                  collapsed = TRUE
                                  ))),
             tabItem(tabName = "dl_methods",
-                    fluidRow(box(textOutput("dl_auc"), plotOutput("dl_history"),
-                                 title = "Deep Learning AUC",
+                    fluidRow(box(
+                        textOutput("dl_auc"), plotOutput("dl_history"),
+                                 title = "Deep Learning Performance",
                                  status = "success",
                                  solidHeader = TRUE),
                              box(plotOutput("dl_map"),

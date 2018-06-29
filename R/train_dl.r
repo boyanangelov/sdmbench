@@ -1,11 +1,15 @@
-#' Train deep learning model
+#' Train deep learning SDM
 #'
-#' @param input_data Parsed deep learning dataframe
+#' @param input_data A dataframe containing parsed and processed deep leanring data.
 #'
-#' @return List containing the trained deep learning model, and a history object for performance evaluation
+#' @return A list containing the trained deep learning model object and a history object for performance evaluation.
+#' @examples
+#' keras_results <- train_dl(benchmarking_data_dl)
 train_dl <- function(input_data) {
+    # initialize model
     model_keras <- keras::keras_model_sequential()
 
+    # specify network architecture
     model_keras %>%
         keras::layer_dense(units = 13,
                            kernel_initializer = "uniform",
@@ -23,6 +27,7 @@ train_dl <- function(input_data) {
                        loss = "binary_crossentropy",
                    metrics = c("accuracy"))
 
+    # train model
     history <- keras::fit(object = model_keras,
                           x = as.matrix(input_data$train_tbl),
                           y = input_data$y_train_vec,

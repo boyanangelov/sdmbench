@@ -7,7 +7,7 @@
 run_sdmbench()
 }
 \value{
-Shiny app object
+A shiny app object
 }
 \description{
 Start sdmbench GUI

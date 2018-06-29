@@ -2,16 +2,19 @@
 % Please edit documentation in R/train_dl.r
 \name{train_dl}
 \alias{train_dl}
-\title{Train deep learning model}
+\title{Train deep learning SDM}
 \usage{
 train_dl(input_data)
 }
 \arguments{
-\item{input_data}{Parsed deep learning dataframe}
+\item{input_data}{A dataframe containing parsed and processed deep leanring data.}
 }
 \value{
-List containing the trained deep learning model, and a history object for performance evaluation
+A list containing the trained deep learning model object and a history object for performance evaluation.
 }
 \description{
-Train deep learning model
+Train deep learning SDM
+}
+\examples{
+keras_results <- train_dl(benchmarking_data_dl)
 }

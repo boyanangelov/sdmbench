@@ -1,11 +1,13 @@
 #' Plot SDM map
 #'
-#' @param raster_data Raster data
-#' @param bmr_models Models extracted from the benchmarking bmr object
-#' @param model_id The model id of interest
-#' @param model_iteration The model iteration of interesst
+#' @param raster_data A raster dataset containing the occurence data.
+#' @param bmr_models A list of models extracted from the benchmarking bmr object.
+#' @param model_id A character string indicating the model id of interest.
+#' @param model_iteration A numeric vlaue indicating the model iteration of interest.
 #'
-#' @return SDM Map plot
+#' @return A plot, showing the species distribution.
+#' @examples
+#' plot_sdm_map(raster_data = benchmarking_data$raster_data$bioclim_data, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4]) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 plot_sdm_map <- function(raster_data, bmr_models, model_id, model_iteration) {
     if (model_id == "classif.logreg") {
         model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model

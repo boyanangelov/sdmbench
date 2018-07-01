@@ -2,7 +2,31 @@
 
 language: R
 dist: trusty
-sudo: false
+sudo: required
+r_binary_packages:
+  dismo,
+  dplyr,
+  e1071,
+  gbm,
+  kernlab,
+  magrittr,
+  maptools,
+  mlr,
+  nnet,
+  randomForest,
+  raster,
+  recipes,
+  rgbif,
+  rgdal,
+  rpart,
+  rsample,
+  RWeka,
+  shiny,
+  shinydashboard,
+  shinyjs,
+  tidyr,
+  xgboost,
+  yardstick
 cache: packages
 addons:
   apt:

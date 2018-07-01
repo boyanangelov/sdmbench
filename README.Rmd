@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 
 # sdmbench
 
+![](logo.png)
+
 Species Distribution Modeling (SDM) is a field of increasing importance in ecology<sup>[1](#footnote1)</sup>. Several popular applications of SDMs are understanding climate change effects on species<sup>[2](#footnote2)</sup>, natural reserve planning<sup>[3](#footnote3)</sup> and invasive species monitoring<sup>[4](#footnote4)</sup>. The `sdmbench` package solves several issues related to the development and evaluation of those models by providing a consistent benchmarking workflow:
 
 * consistent species occurence data acquisition and preprocessing

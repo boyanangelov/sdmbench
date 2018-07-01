@@ -4,6 +4,8 @@
 sdmbench
 ========
 
+![](logo.png)
+
 Species Distribution Modeling (SDM) is a field of increasing importance in ecology<sup>[1](#footnote1)</sup>. Several popular applications of SDMs are understanding climate change effects on species<sup>[2](#footnote2)</sup>, natural reserve planning<sup>[3](#footnote3)</sup> and invasive species monitoring<sup>[4](#footnote4)</sup>. The `sdmbench` package solves several issues related to the development and evaluation of those models by providing a consistent benchmarking workflow:
 
 -   consistent species occurence data acquisition and preprocessing
@@ -73,10 +75,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     3 0.879
-#> 2 classif.logreg           3 0.581
-#> 3 classif.rpart            3 0.758
-#> 4 classif.ksvm             3 0.913
+#> 1 classif.randomForest     4 0.879
+#> 2 classif.logreg           4 0.635
+#> 3 classif.rpart            4 0.821
+#> 4 classif.ksvm             4 0.919
 ```
 
 Plot best model results:

@@ -20,6 +20,7 @@ Imports:
     gbm,
     keras,
     kernlab,
+    magrittr,
     maptools,
     mlr,
     nnet,

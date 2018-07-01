@@ -8,7 +8,9 @@
 #'
 #' @return Benchmarking object (class bmr).
 #' @examples
-#' bmr <- benchmark_sdm(benchmarking_data$df_data, learners = learners, dataset_type = "block", sample = FALSE)
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
+#' learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob"), mlr::makeLearner("classif.logreg", predict.type = "prob"))
+#' bmr <- benchmark_sdm(benchmarking_data$df_data, learners = learners, dataset_type = "default", sample = FALSE)
 benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default", sample = FALSE) {
     benchmarking_data$label <- as.factor(benchmarking_data$label)
     if (dataset_type == "default") {

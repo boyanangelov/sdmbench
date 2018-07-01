@@ -4,6 +4,8 @@
 #'
 #' @return A list containing the trained deep learning model object and a history object for performance evaluation.
 #' @examples
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
+#' benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
 #' keras_results <- train_dl(benchmarking_data_dl)
 train_dl <- function(input_data) {
     # initialize model

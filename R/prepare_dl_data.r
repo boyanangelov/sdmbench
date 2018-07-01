@@ -5,6 +5,7 @@
 #'
 #' @return A dataframe containing the prepared data.
 #' @examples
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 #' benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
 prepare_dl_data <- function(input_data, partitioning_type) {
     if (partitioning_type %in% c("checkerboard1", "checkerboard2")) {

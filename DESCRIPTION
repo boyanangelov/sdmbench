@@ -28,6 +28,7 @@ Imports:
     raster,
     recipes,
     rgbif,
+    rgdal,
     rpart,
     rsample,
     RWeka,

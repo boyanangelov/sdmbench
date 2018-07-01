@@ -8,6 +8,7 @@
 #'
 #' @return A dataframe partitionined using the selected method.
 #' @examples
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 #' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$climate_variables, method = "block")
 partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "default") {

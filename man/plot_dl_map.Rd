@@ -20,5 +20,7 @@ A plot, showing the species distribution.
 A function that enables the plotting of deep learning predictions on a map.
 }
 \examples{
-plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
+\dontrun{
+plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun)
+}
 }

@@ -7,7 +7,9 @@
 #'
 #' @return A plot, showing the species distribution.
 #' @examples
-#' plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
+#' \dontrun{
+#' plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun)
+#' }
 plot_dl_map <- function(raster_data, keras_model, custom_fun) {
     pr <- dismo::predict(raster_data, keras_model, fun = custom_fun)
     raster::plot(pr, main = "DLSDM Map")

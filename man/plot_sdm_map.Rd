@@ -22,5 +22,7 @@ A plot, showing the species distribution.
 Plot SDM map
 }
 \examples{
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4]) + raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
+\dontrun{
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4])
+}
 }

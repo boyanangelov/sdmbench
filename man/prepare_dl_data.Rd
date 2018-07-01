@@ -18,5 +18,6 @@ A dataframe containing the prepared data.
 Parse data for deep learning model training
 }
 \examples{
+benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
 }

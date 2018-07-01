@@ -18,5 +18,6 @@ A list containing AUC value and predict object (for plotting).
 Evaluate MaxEnt model performance
 }
 \examples{
+benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
 }

@@ -6,6 +6,9 @@
 #'
 #' @return A tibble containing the model estimates.
 #' @examples
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
+#' benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
+#' keras_results <- train_dl(benchmarking_data_dl)
 #' keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 evaluate_dl <- function(model_keras, input_data) {
     yhat_keras_class_vec <- keras::predict_classes(object = model_keras,

@@ -5,6 +5,7 @@
 #'
 #' @return A list containing AUC value and predict object (for plotting).
 #' @examples
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 #' maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
 evaluate_maxent <- function(raster_data, method) {
     eval <- ENMeval::ENMevaluate(occ = raster_data$coords_presence,

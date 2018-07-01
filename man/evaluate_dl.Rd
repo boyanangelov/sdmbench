@@ -18,5 +18,8 @@ A tibble containing the model estimates.
 A function to evaluate a deep learning model.
 }
 \examples{
+benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
+benchmarking_data_dl <- prepare_dl_data(benchmarking_data$df_data, "default")
+keras_results <- train_dl(benchmarking_data_dl)
 keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 }

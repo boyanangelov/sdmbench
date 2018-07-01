@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ## Introduction
 
 Species Distribution Modeling (SDM), or Environmental Niche Modeling, is a field of great importance in ecology. Several popular applications of SDMs are in estimating climate change effects on species, natural reserve planning and invasive species dispersal predictions[^1]. Those models are trained by using a species occurence dataset (containing geographical coordinates of the observation locations) and associated environmental variables. The latter can be many and domain expertise is required to select the optimal ones. In most cases a set of "bioclimactic" variables can be successfully used. The [Worldclim website](http://www.worldclim.org/bioclim) provides a description:
@@ -214,6 +215,8 @@ This boxplot shows us the distribution of AUC scores across the benchmarking ite
 
 ## MaxEnt
 
+__Note: For this section you need a working installation of MaxEnt. Installation instructions can be found [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).__
+
 MaxEnt is the most wide spread SDM method. This makes it an important target for benchmarking. A good description is available from the [GBIF website](https://biodiversityinformatics.amnh.org/open_source/maxent/)):
 
 > The Maxent software is based on the maximum-entropy approach for modeling species niches and distributions. From a set of environmental (e.g., climatic) grids and georeferenced occurrence localities (e.g. mediated by GBIF), the model expresses a probability distribution where each grid cell has a predicted suitability of conditions for the species. Under particular assumptions about the input data and biological sampling efforts that led to occurrence records, the output can be interpreted as predicted probability of presence (cloglog transform), or as predicted local abundance (raw exponential output). Species models are determined from a set of environmental or climate layers (or “coverages”) for a set of grid cells in a landscape, together with a set of sample locations where the species has been observed.  The model expresses the suitability of each grid cell as a function of the environmental variables at that grid cell.  A high value of the function at a particular grid cell indicates that the grid cell is predicted to have suitable conditions for that species.  The computed model is a probability distribution over all the grid cells.  The distribution chosen is the one that has maximum entropy subject to some constraints: it must have the same expectation for each feature (derived from the environmental layers) as the average over sample locations.
@@ -221,15 +224,21 @@ MaxEnt is the most wide spread SDM method. This makes it an important target for
 We are fitting and evaluating the MaxEnt model in one call with the `evaluate_maxent` function. This funciton requires data in raster format along with the desired data partitioning method.
 
 ```{r}
-maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
-maxent_results
+jar <- paste(system.file(package="dismo"), "/java/maxent.jar", sep='')
+if (file.exists(jar)) {
+    maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
+    maxent_results
+}
+
 ```
 
 The output provides us with the AUC of the model and a raster object we can plot. We can see that the MaxEnt AUC is a bit lower than the Random Forest. Let's have a look at the SDM map:
 
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
+if (file.exists(jar)) {
 raster::plot(maxent_results$best_model_pr, main = "MaxEnt") +
     raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
+}
 ```
 
 ## Deep Learning

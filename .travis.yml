@@ -5,9 +5,7 @@ dist: trusty
 sudo: required
 r_binary_packages:
   - dismo
-  - ddalpha
   - dplyr
-  - e1071
   - gbm
   - kernlab
   - magrittr
@@ -15,7 +13,6 @@ r_binary_packages:
   - mlr
   - randomForest
   - raster
-  - recipes
   - rgbif
   - rgdal
   - rpart

@@ -15,7 +15,6 @@ r_binary_packages:
   - magrittr
   - maptools
   - mlr
-  - nnet
   - randomForest
   - r-api-3
   - raster

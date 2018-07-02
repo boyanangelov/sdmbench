@@ -19,14 +19,11 @@ r_binary_packages:
   - rgbif
   - rgdal
   - rpart
-  - rsample
-  - RWeka
   - shiny
   - shinydashboard
   - shinyjs
   - tidyr
   - xgboost
-  - yardstick
 cache: packages
 addons:
   apt:

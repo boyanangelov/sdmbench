@@ -16,7 +16,6 @@ r_binary_packages:
   - maptools
   - mlr
   - randomForest
-  - r-api-3
   - raster
   - recipes
   - rgbif

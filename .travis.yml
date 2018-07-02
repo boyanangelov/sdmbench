@@ -4,16 +4,20 @@ language: R
 dist: trusty
 sudo: required
 r_binary_packages:
+  - class
   - dismo
+  - ddalpha
   - dplyr
   - e1071
   - gbm
+  - ipred
   - kernlab
   - magrittr
   - maptools
   - mlr
   - nnet
   - randomForest
+  - r-api-3
   - raster
   - recipes
   - rgbif

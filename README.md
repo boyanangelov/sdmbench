@@ -21,13 +21,17 @@ Installation
 
 ``` r
 # add build_vignettes = TRUE if you want the package vignette
-# devtools::install_github("boyanangelov/sdmbench")
-library(sdmbench)
-#> sdmbench: Tools for benchmarking Species Distribution Models 
-#> ============================================================
-#> For more information visit http://github.com/ 
-#> To start the GUI: run_sdmbench()
+evtools::install_github("boyanangelov/sdmbench")
 ```
+
+There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command).
+
+``` r
+# consult the keras documentation if you want GPU support
+keras::install_keras(tensorflow = "default")
+```
+
+Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).
 
 Examples
 --------
@@ -35,6 +39,12 @@ Examples
 Here are several examples of what you can do with `sdmbench`. Downloading and prepare benchmarking data:
 
 ``` r
+library(sdmbench)
+#> sdmbench: Tools for benchmarking Species Distribution Models 
+#> ============================================================
+#> For more information visit http://github.com/ 
+#> To start the GUI: run_sdmbench()
+
 benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, climate_resolution = 10)
 #> [1] "Getting benchmarking data...."
 #> [1] "Cleaning benchmarking data...."
@@ -75,10 +85,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     4 0.879
-#> 2 classif.logreg           4 0.635
-#> 3 classif.rpart            4 0.821
-#> 4 classif.ksvm             4 0.919
+#> 1 classif.randomForest     1 0.881
+#> 2 classif.logreg           1 0.678
+#> 3 classif.rpart            1 0.846
+#> 4 classif.ksvm             1 0.915
 ```
 
 Plot best model results:
@@ -94,7 +104,7 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
                                                                  border = "darkgrey")
 ```
 
-![](README-unnamed-chunk-5-1.png)
+![](README-unnamed-chunk-6-1.png)
 
     #> integer(0)
 

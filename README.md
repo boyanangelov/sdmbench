@@ -21,7 +21,7 @@ Installation
 
 ``` r
 # add build_vignettes = TRUE if you want the package vignette
-evtools::install_github("boyanangelov/sdmbench")
+devtools::install_github("boyanangelov/sdmbench")
 ```
 
 There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command).
@@ -85,10 +85,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     1 0.881
-#> 2 classif.logreg           1 0.678
-#> 3 classif.rpart            1 0.846
-#> 4 classif.ksvm             1 0.915
+#> 1 classif.randomForest     2 0.899
+#> 2 classif.logreg           2 0.655
+#> 3 classif.rpart            2 0.773
+#> 4 classif.ksvm             2 0.923
 ```
 
 Plot best model results:

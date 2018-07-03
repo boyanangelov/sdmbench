@@ -34,7 +34,7 @@ The end result of a `sdmbench` SDM analysis is to determine the model - data pro
 
 ```{r eval=FALSE}
 # add build_vignettes = TRUE if you want the package vignette
-evtools::install_github("boyanangelov/sdmbench")
+devtools::install_github("boyanangelov/sdmbench")
 ```
 
 There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command).

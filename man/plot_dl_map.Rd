@@ -4,7 +4,7 @@
 \alias{plot_dl_map}
 \title{Plot deep learning SDM map}
 \usage{
-plot_dl_map(raster_data, keras_model, custom_fun)
+plot_dl_map(raster_data, keras_model, custom_fun, map_type = "static")
 }
 \arguments{
 \item{raster_data}{A raster dataset containing the occurence data.}
@@ -12,15 +12,17 @@ plot_dl_map(raster_data, keras_model, custom_fun)
 \item{keras_model}{A trained deep learning model.}
 
 \item{custom_fun}{A custom predict function.}
+
+\item{map_type}{A logical indicating if the map should be static or interactive}
 }
 \value{
-A plot, showing the species distribution.
+An interactive leaflet map, showing the species distribution.
 }
 \description{
 A function that enables the plotting of deep learning predictions on a map.
 }
 \examples{
 \dontrun{
-plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun)
+plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun, map_type = "static")
 }
 }

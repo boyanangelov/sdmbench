@@ -4,7 +4,8 @@
 \alias{plot_sdm_map}
 \title{Plot SDM map}
 \usage{
-plot_sdm_map(raster_data, bmr_models, model_id, model_iteration)
+plot_sdm_map(raster_data, bmr_models, model_id, model_iteration,
+  map_type = "static")
 }
 \arguments{
 \item{raster_data}{A raster dataset containing the occurence data.}
@@ -14,15 +15,17 @@ plot_sdm_map(raster_data, bmr_models, model_id, model_iteration)
 \item{model_id}{A character string indicating the model id of interest.}
 
 \item{model_iteration}{A numeric vlaue indicating the model iteration of interest.}
+
+\item{map_type}{A logical indicating if the map should be static or interactive}
 }
 \value{
-A plot, showing the species distribution.
+An interactive leaflet map, showing the species distribution.
 }
 \description{
 Plot SDM map
 }
 \examples{
 \dontrun{
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4])
+plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables, bmr_models = bmr_models, model_id = best_results$learner.id[4], model_iteration = best_results$iter[4], map_type = "static")
 }
 }

@@ -1,3 +1,4 @@
+library(magrittr)
 server <- function(input, output) {
 
     shinyjs::disable("go_bmr")
@@ -39,10 +40,11 @@ server <- function(input, output) {
         output$species_name <- renderText(input$text)
 
 
-        output$occ_map <- renderPlot(raster::plot(benchmarking_data$raster_data$climate_variables, 1) +
-                                         points(benchmarking_data$raster_data$coords_presence,
-                                                col = "red", cex=1.15, pch = 10) +
-                                         raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+        output$occ_map <- leaflet::renderLeaflet({
+            leaflet::leaflet(data = benchmarking_data$raster_data$coords_presence) %>%
+                leaflet::addTiles() %>%
+                leaflet::addCircleMarkers(~x, ~y, fillOpacity = 0.3)
+        })
 
         progress$inc(1/4, detail = "Finished")
         progress$close()
@@ -86,59 +88,59 @@ server <- function(input, output) {
         bmr_models <- mlr::getBMRModels(bmr)
         best_results <- get_best_model_results(bmr)
 
-        output$model_map_1 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+        output$model_map_1 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[1],
-                                                    model_iteration = best_results$iter[1]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+                                                    model_iteration = best_results$iter[1],
+                                                    map_type = "interactive"))
 
-        output$model_map_2 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+        output$model_map_2 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[2],
-                                                    model_iteration = best_results$iter[2]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+                                                    model_iteration = best_results$iter[2],
+                                                    map_type = "interactive"))
 
-        output$model_map_3 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+        output$model_map_3 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[3],
-                                                    model_iteration = best_results$iter[3]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+                                                    model_iteration = best_results$iter[3],
+                                                    map_type = "interactive"))
 
-        output$model_map_4 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+        output$model_map_4 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                     model_id = best_results$learner.id[4],
-                                                    model_iteration = best_results$iter[4]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_5 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                    model_iteration = best_results$iter[4],
+                                                    map_type = "interactive"))
+        output$model_map_5 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[5],
-                                                      model_iteration = best_results$iter[5]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_6 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                      model_iteration = best_results$iter[5],
+                                                      map_type = "interactive"))
+        output$model_map_6 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[6],
-                                                      model_iteration = best_results$iter[6]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_7 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                      model_iteration = best_results$iter[6],
+                                                      map_type = "interactive"))
+        output$model_map_7 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[7],
-                                                      model_iteration = best_results$iter[7]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_8 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                      model_iteration = best_results$iter[7],
+                                                      map_type = "interactive"))
+        output$model_map_8 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[8],
-                                                      model_iteration = best_results$iter[8]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_9 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                      model_iteration = best_results$iter[8],
+                                                      map_type = "interactive"))
+        output$model_map_9 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[9],
-                                                      model_iteration = best_results$iter[9]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
-        output$model_map_10 <- renderPlot(plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+                                                      model_iteration = best_results$iter[9],
+                                                      map_type = "interactive"))
+        output$model_map_10 <- leaflet::renderLeaflet(plot_sdm_map(raster_data = benchmarking_data$raster_data,
                                                       bmr_models = bmr_models,
                                                       model_id = best_results$learner.id[10],
-                                                      model_iteration = best_results$iter[10]) +
-                                             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+                                                      model_iteration = best_results$iter[10],
+                                                      map_type = "interactive"))
 
         progress_bmr$inc(1/3, detail = "Done!")
         progress_bmr$close()
@@ -160,8 +162,14 @@ server <- function(input, output) {
             progress_meeval$inc(1/3, detail = "Plotting MaxEnt map")
 
             output$maxent_auc <- renderText(maxent_results$best_auc)
-            output$maxent_map <- renderPlot(raster::plot(maxent_results$best_model_pr)+
-                                                raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+
+            pal <- leaflet::colorNumeric(c("#ffdbe2", "#fff56b", "#58ff32"), raster::values(maxent_results$best_model_pr), na.color = "transparent")
+            output$maxent_map <- leaflet::renderLeaflet(leaflet::leaflet(data = v$data$raster_data$coords_presence) %>%
+                                                            leaflet::addTiles() %>%
+                                                            leaflet::addRasterImage(maxent_results$best_model_pr, colors = pal, opacity = 0.5) %>%
+                                                            leaflet::addLegend(title = "Habitat Suitability", pal = pal, values = raster::values(maxent_results$best_model_pr), opacity = 1)
+
+            )
 
 
             progress_meeval$inc(1/3, detail = "Finished")
@@ -196,11 +204,11 @@ server <- function(input, output) {
             as.vector(v)
         }
 
-        output$dl_auc<- renderText(paste("AUC: ", get_dl_auc(keras_evaluation)))
-        output$dl_map <- renderPlot(plot_dl_map(raster_data = v$data$raster_data$climate_variables,
+        output$dl_auc <- renderText(paste("AUC: ", get_dl_auc(keras_evaluation)))
+        output$dl_map <- leaflet::renderLeaflet(plot_dl_map(raster_data = v$data$raster_data,
                                                 keras_model = keras_results$model,
-                                                custom_fun = temp_fun)+
-                                        raster::plot(wrld_simpl, add = TRUE, border = "darkgrey"))
+                                                custom_fun = temp_fun,
+                                                map_type = "interactive"))
         output$dl_history <- renderPlot(plot(keras_results$history))
 
         progress_dl$inc(1/3, detail = "Finished!")

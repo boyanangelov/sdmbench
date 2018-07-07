@@ -85,23 +85,24 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     2 0.899
-#> 2 classif.logreg           2 0.655
-#> 3 classif.rpart            2 0.773
-#> 4 classif.ksvm             2 0.923
+#> 1 classif.randomForest     3 0.859
+#> 2 classif.logreg           3 0.596
+#> 3 classif.rpart            3 0.825
+#> 4 classif.ksvm             3 0.933
 ```
 
 Plot best model results:
 
 ``` r
 bmr_models <- mlr::getBMRModels(bmr)
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
-                                                    bmr_models = bmr_models,
-                                                    model_id = best_results$learner.id[1],
-                                                    model_iteration = best_results$iter[1]) +
-                                                    raster::plot(wrld_simpl, 
-                                                                 add = TRUE, 
-                                                                 border = "darkgrey")
+plot_sdm_map(raster_data = benchmarking_data$raster_data,
+            bmr_models = bmr_models,
+            model_id = best_results$learner.id[1],
+            model_iteration = best_results$iter[1],
+             map_type = "static") +
+            raster::plot(wrld_simpl, 
+                         add = TRUE, 
+                         border = "darkgrey")
 ```
 
 ![](README-unnamed-chunk-6-1.png)

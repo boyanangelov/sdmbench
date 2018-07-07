@@ -192,25 +192,29 @@ Here we can see that `randomForest` is the best performing algorithm. This dataf
 
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
 bmr_models <- mlr::getBMRModels(bmr)
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+plot_sdm_map(raster_data = benchmarking_data$raster_data,
             bmr_models = bmr_models,
             model_id = best_results$learner.id[1],
-            model_iteration = best_results$iter[1]) +
+            model_iteration = best_results$iter[1],
+            map_type = "static") +
             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+plot_sdm_map(raster_data = benchmarking_data$raster_data,
             bmr_models = bmr_models,
             model_id = best_results$learner.id[2],
-            model_iteration = best_results$iter[2]) +
+            model_iteration = best_results$iter[2],
+            map_type = "static") +
             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+plot_sdm_map(raster_data = benchmarking_data$raster_data,
             bmr_models = bmr_models,
             model_id = best_results$learner.id[3],
-            model_iteration = best_results$iter[3]) +
+            model_iteration = best_results$iter[3],
+            map_type = "static") +
             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
-plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
+plot_sdm_map(raster_data = benchmarking_data$raster_data,
             bmr_models = bmr_models,
             model_id = best_results$learner.id[4],
-            model_iteration = best_results$iter[4]) +
+            model_iteration = best_results$iter[4],
+            map_type = "static") +
             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 ```
 
@@ -245,7 +249,7 @@ The output provides us with the AUC of the model and a raster object we can plot
 
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
 if (file.exists(jar)) {
-raster::plot(maxent_results$best_model_pr, main = "MaxEnt") +
+    raster::plot(maxent_results$best_model_pr, main = "MaxEnt") +
     raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 }
 ```
@@ -294,8 +298,8 @@ temp_fun <- function(model, input_data) {
             v <- keras::predict_proba(object = model, x = as.matrix(data))
             as.vector(v)
         }
-plot_dl_map(benchmarking_data$raster_data$climate_variables, 
-            keras_results$model, custom_fun = temp_fun) +
+plot_dl_map(benchmarking_data$raster_data, 
+            keras_results$model, custom_fun = temp_fun, map_type = "static") +
             raster::plot(wrld_simpl, add = TRUE, border = "darkgrey")
 ```
 

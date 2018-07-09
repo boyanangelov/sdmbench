@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
+[![Build Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench) [![DOI](https://zenodo.org/badge/138335161.svg)](https://zenodo.org/badge/latestdoi/138335161)
 
 sdmbench
 ========
@@ -85,10 +85,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     3 0.859
-#> 2 classif.logreg           3 0.596
-#> 3 classif.rpart            3 0.825
-#> 4 classif.ksvm             3 0.933
+#> 1 classif.randomForest     4 0.860
+#> 2 classif.logreg           4 0.640
+#> 3 classif.rpart            4 0.752
+#> 4 classif.ksvm             4 0.914
 ```
 
 Plot best model results:

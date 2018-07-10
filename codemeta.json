@@ -1,0 +1,23 @@
+{
+  "@context": "https://raw.githubusercontent.com/codemeta/codemeta/master/codemeta.jsonld",
+  "@type": "Code",
+  "author": [
+    {
+      "@id": " https://orcid.org/0000-0001-5068-4234",
+      "@type": "Person",
+      "email": "boyan.angelov@gmail.com",
+      "name": "Boyan Angelov",
+      "affiliation": ""
+    }
+  ],
+  "identifier": "https://zenodo.org/record/1308199",
+  "codeRepository": "https://github.com/boyanangelov/sdmbench",
+  "datePublished": "2018-07-10",
+  "dateModified": "2018-07-10",
+  "dateCreated": "2018-07-10",
+  "description": "sdmbench is an R package that provides tools for benchmarking species distribution models.",
+  "keywords": "species distribution modeling, ecological niche modeling, machine learning, benchmarking",
+  "license": "MIT",
+  "title": "sdmbench",
+  "version": "v0.1.2"
+}

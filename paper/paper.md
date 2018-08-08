@@ -8,6 +8,10 @@ tags:
 authors:
   - name: Boyan Angelov
     orcid: 0000-0001-5068-4234
+    affiliation: 1
+affiliations:
+ - name: MindMatch GmbH
+   index: 1
 date: 11 July 2018
 bibliography: paper.bib
 ---

@@ -22,7 +22,7 @@ get_benchmarking_data <- function(scientific_name,
     print("Getting benchmarking data....")
 
     # download occurence data
-    species_occ <- rgbif::occ_search(scientificName = scientific_name,
+    species_occ <- rgbif::occ_data(scientificName = scientific_name,
                                      limit = limit,
                                      hasGeospatialIssue = FALSE)
     species_occ_data <- species_occ$data %>%

@@ -38,14 +38,14 @@ The end result of a `sdmbench` SDM analysis is to determine the model - data pro
 devtools::install_github("boyanangelov/sdmbench")
 ```
 
-There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command).
+There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command). Note that this step requires a working Python installation on your system. Most modern operating systems have Python pre-installed, but if you are not sure you can check the [official website](https://www.python.org/).
 
 ```{r eval=FALSE}
 # consult the keras documentation if you want GPU support
 keras::install_keras(tensorflow = "default")
 ```
 
-Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).
+Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent). Note that this requires Java which you can get get from [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 ## Examples
 

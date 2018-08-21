@@ -13,8 +13,6 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
-keras::install_keras(tensorflow = "default")
 ```
 
 
@@ -73,6 +71,14 @@ The package can be installed from Github: `devtools::install_github("boyanangelo
 ```{r}
 library(sdmbench)
 ```
+
+In addition to the package you will need working Python and Java installations for deep learning and MaxEnt respectively. The installation procedures differ between operating systems, so you should consult the official documentations at the [Python](https://www.python.org/) and [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html) websites. After installing Python you should use the `keras` package to set up Tensorflow:
+
+```{r}
+keras::install_keras(tensorflow = "default")
+```
+
+After installing Java you will need to download the MaxEnt .jar file. For this check out [this link](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).
 
 ## Data Download
 

@@ -24,14 +24,14 @@ Installation
 devtools::install_github("boyanangelov/sdmbench")
 ```
 
-There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command).
+There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command). Note that this step requires a working Python installation on your system. Most modern operating systems have Python pre-installed, but if you are not sure you can check the [official website](https://www.python.org/).
 
 ``` r
 # consult the keras documentation if you want GPU support
 keras::install_keras(tensorflow = "default")
 ```
 
-Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).
+Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent). Note that this requires Java which you can get get from [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 Examples
 --------
@@ -85,10 +85,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     1 0.920
-#> 2 classif.logreg           1 0.521
-#> 3 classif.rpart            1 0.746
-#> 4 classif.ksvm             1 0.910
+#> 1 classif.randomForest     1 0.902
+#> 2 classif.logreg           1 0.646
+#> 3 classif.rpart            1 0.798
+#> 4 classif.ksvm             1 0.895
 ```
 
 Plot best model results:

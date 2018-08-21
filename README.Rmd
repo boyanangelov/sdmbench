@@ -29,7 +29,7 @@ Species Distribution Modeling (SDM) is a field of increasing importance in ecolo
 * integration of a wide variety of machine learning models
 * graphical user interface for non/semi-technical users
 
-The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest.
+The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest. Such an analysis is useful to researchers who want to avoid issues of model selection and evaluation, and want to rapidly test prototypes of species distribution models.
 
 ## Installation
 

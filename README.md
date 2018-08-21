@@ -14,7 +14,7 @@ Species Distribution Modeling (SDM) is a field of increasing importance in ecolo
 -   integration of a wide variety of machine learning models
 -   graphical user interface for non/semi-technical users
 
-The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest.
+The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest. Such an analysis is useful to researchers who want to avoid issues of model selection and evaluation, and want to rapidly test prototypes of species distribution models.
 
 Installation
 ------------
@@ -57,19 +57,19 @@ benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, c
 #> [1] "Done!"
 head(benchmarking_data$df_data)
 #>   bio1 bio2 bio3 bio4 bio5 bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13
-#> 1  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 2  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 3  206  105   59 2413  287  110  177  235  173   235   173   896   124
-#> 4  228  124   89  352  299  161  138  226  229   232   224   938   128
-#> 5  219  133   57 3302  317   86  231  257  172   257   172   516   103
-#> 6  225  171   60 3677  347   64  283  251  171   262   171   427   111
+#> 1  219  133   57 3302  317   86  231  257  172   257   172   516   103
+#> 2  225  171   60 3677  347   64  283  251  171   262   171   427   111
+#> 3  178  162   81  562  278   80  198  185  175   185   171   721   133
+#> 4  178  162   81  562  278   80  198  185  175   185   171   721   133
+#> 5  206  105   59 2413  287  110  177  235  173   235   173   896   124
+#> 6  224  136   56 3476  328   87  241  264  174   264   174   519    94
 #>   bio14 bio15 bio16 bio17 bio18 bio19 label
-#> 1    22    54   274    89   274   145     1
-#> 2    22    54   274    89   274   145     1
-#> 3    29    45   339    96   339    96     1
-#> 4    33    39   330   152   173   287     1
-#> 5     5    80   284    16   284    16     1
-#> 6     0   109   287     1   193     1     1
+#> 1     5    80   284    16   284    16     1
+#> 2     0   109   287     1   193     1     1
+#> 3    22    54   274    89   274   145     1
+#> 4    22    54   274    89   274   145     1
+#> 5    29    45   339    96   339    96     1
+#> 6     5    78   273    20   273    20     1
 ```
 
 Benchmarking machine learning models on parsed species occurence data:
@@ -85,10 +85,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     4 0.860
-#> 2 classif.logreg           4 0.640
-#> 3 classif.rpart            4 0.752
-#> 4 classif.ksvm             4 0.914
+#> 1 classif.randomForest     1 0.920
+#> 2 classif.logreg           1 0.521
+#> 3 classif.rpart            1 0.746
+#> 4 classif.ksvm             1 0.910
 ```
 
 Plot best model results:

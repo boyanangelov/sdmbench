@@ -1,7 +1,7 @@
 #' Parse data for deep learning model training
 #'
 #' @param input_data A dataframe containing the input data.
-#' @param partitioning_type A character string indicating the desired spatial data partitioning method.
+#' @param partitioning_type A character string indicating the desired spatial data partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".
 #'
 #' @return A dataframe containing the prepared data.
 #' @examples

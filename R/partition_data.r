@@ -3,8 +3,8 @@
 #' A function that partitions spatial data in order to avoid spatial autocorrelation.
 #' @param dataset_raster A raster dataset.
 #' @param dataset A dataframe containing species occurences.
-#' @param env A raster dataset containing the Bioclim variables.
-#' @param method A character string representing the desired spatial partitioning method.
+#' @param env A raster dataset containing the environmental variables.
+#' @param method A character string representing the desired spatial partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".
 #'
 #' @return A dataframe partitionined using the selected method.
 #' @examples

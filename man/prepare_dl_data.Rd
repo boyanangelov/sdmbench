@@ -9,7 +9,7 @@ prepare_dl_data(input_data, partitioning_type)
 \arguments{
 \item{input_data}{A dataframe containing the input data.}
 
-\item{partitioning_type}{A character string indicating the desired spatial data partitioning method.}
+\item{partitioning_type}{A character string indicating the desired spatial data partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".}
 }
 \value{
 A dataframe containing the prepared data.

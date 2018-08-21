@@ -4,7 +4,7 @@
 #' @param raster_data A raster dataset containing the occurence data.
 #' @param keras_model A trained deep learning model.
 #' @param custom_fun A custom predict function.
-#' @param map_type A logical indicating if the map should be static or interactive
+#' @param map_type A logical indicating if the map should be static or interactive.
 #' @return An interactive leaflet map, showing the species distribution.
 #' @examples
 #' \dontrun{

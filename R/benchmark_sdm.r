@@ -1,12 +1,12 @@
 #' Benchmark regular models
 #'
 #' A function to benchmark a collection of regular machine learning models.
-#' @param benchmarking_data A dataframe from the output of \code{\link{get_benchmarking_data}} function.
-#' @param learners A list of mlr learner objects.
-#' @param dataset_type A character string indicating spatial partitioning method.
-#' @param sample Logical. Indicates whether benchmarking should be done on an undersampled dataset.
+#' @param benchmarking_data A dataframe from the output of \code{\link{get_benchmarking_data}} function. This dataset contains species occurence coordinates together with a set of environmental data points.
+#' @param learners A list of mlr learner objects which specify which models to use (i.e. Random Forests).
+#' @param dataset_type A character string indicating spatial partitioning method. This is used in order to avoid spatial autocorrelation issues.
+#' @param sample Logical. Indicates whether benchmarking should be done on an undersampled dataset. This is useful for testing model efficiency with an inbalanced dataset (i.e. few observations and many background (pseudo-absence) points).
 #'
-#' @return Benchmarking object (class bmr).
+#' @return Benchmarking object (class bmr). This object can be acessed by other functions in order to obtain the benchmark results.
 #' @examples
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 #' learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob"), mlr::makeLearner("classif.logreg", predict.type = "prob"))

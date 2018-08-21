@@ -3,8 +3,8 @@
 #' @param raster_data A raster dataset containing the occurence data.
 #' @param bmr_models A list of models extracted from the benchmarking bmr object.
 #' @param model_id A character string indicating the model id of interest.
-#' @param model_iteration A numeric vlaue indicating the model iteration of interest.
-#' @param map_type A logical indicating if the map should be static or interactive
+#' @param model_iteration A numeric value indicating the model iteration of interest.
+#' @param map_type A logical indicating if the map should be static or interactive.
 #'
 #' @return An interactive leaflet map, showing the species distribution.
 #' @examples

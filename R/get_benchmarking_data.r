@@ -1,12 +1,12 @@
 #' Download data for benchmarking
 #'
 #' @param scientific_name A character string indicating scientific species name.
-#' @param limit A numeric value indicating maximum number of occurence records requested.
-#' @param climate_resolution A numeric vlaue indicating the resolution of the raster environmental variables.
-#' @param climate_type A character string indicating type of climate variables, either "default" for current climate or "future" for CMIP5 projections.
-#' @param projected_model A character string indicates the type of future climate projection.
-#' @param rcp A numeric value indicating representative concentration pathways.
-#' @param year A numeric value indicating the number of years into the future for projection.
+#' @param limit A numeric value indicating maximum number of occurence records requested. The value has to be positive and has a maximum of 200000 (observations you can download with a single call).
+#' @param climate_resolution A numeric vlaue indicating the resolution of the raster environmental variables. For a climate type of `default` possible resolutions are: 0.5, 2.5, 5, and 10 (minutes of a degree). For a `future` climate: 2.5, 5, and 10.
+#' @param climate_type A character string indicating type of climate variables, either `default` for current climate or `future` for CMIP5 projections.
+#' @param projected_model A character string indicates the type of future climate projection. Possible values are: "AC", "BC", "CC", "CE", "CN", "GF", "GD", "GS", "HD", "HG", "HE", "IN", "IP", "MI", "MR", "MC", "MP", "MG", or "NO".
+#' @param rcp A numeric value indicating representative concentration pathways. Possible values: 26, 45, 60, or 85.
+#' @param year A numeric value indicating the number of years into the future for projection. Can be 50 or 70.
 #'
 #' @return A list containing the downloaded datasets.
 #'

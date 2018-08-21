@@ -13,7 +13,7 @@ plot_dl_map(raster_data, keras_model, custom_fun, map_type = "static")
 
 \item{custom_fun}{A custom predict function.}
 
-\item{map_type}{A logical indicating if the map should be static or interactive}
+\item{map_type}{A logical indicating if the map should be static or interactive.}
 }
 \value{
 An interactive leaflet map, showing the species distribution.

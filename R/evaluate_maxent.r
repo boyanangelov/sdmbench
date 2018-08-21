@@ -1,7 +1,7 @@
 #' Evaluate MaxEnt model performance
 #'
 #' @param raster_data A raster dataset.
-#' @param method A character string indicating the spatial data partitioning method.
+#' @param method A character string indicating the spatial data partitioning method. Possible values are `jackknife`, `randomkfold`, `user`, `block`, `checkerboard1`, `checkerboard2`.
 #'
 #' @return A list containing AUC value and predict object (for plotting).
 #' @examples

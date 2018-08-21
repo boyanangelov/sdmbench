@@ -14,9 +14,9 @@ plot_sdm_map(raster_data, bmr_models, model_id, model_iteration,
 
 \item{model_id}{A character string indicating the model id of interest.}
 
-\item{model_iteration}{A numeric vlaue indicating the model iteration of interest.}
+\item{model_iteration}{A numeric value indicating the model iteration of interest.}
 
-\item{map_type}{A logical indicating if the map should be static or interactive}
+\item{map_type}{A logical indicating if the map should be static or interactive.}
 }
 \value{
 An interactive leaflet map, showing the species distribution.

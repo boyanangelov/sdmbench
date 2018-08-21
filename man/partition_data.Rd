@@ -11,9 +11,9 @@ partition_data(dataset_raster, dataset, env, method)
 
 \item{dataset}{A dataframe containing species occurences.}
 
-\item{env}{A raster dataset containing the Bioclim variables.}
+\item{env}{A raster dataset containing the environmental variables.}
 
-\item{method}{A character string representing the desired spatial partitioning method.}
+\item{method}{A character string representing the desired spatial partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".}
 }
 \value{
 A dataframe partitionined using the selected method.

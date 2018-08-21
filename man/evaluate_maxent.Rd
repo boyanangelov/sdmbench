@@ -9,7 +9,7 @@ evaluate_maxent(raster_data, method)
 \arguments{
 \item{raster_data}{A raster dataset.}
 
-\item{method}{A character string indicating the spatial data partitioning method.}
+\item{method}{A character string indicating the spatial data partitioning method. Possible values are `jackknife`, `randomkfold`, `user`, `block`, `checkerboard1`, `checkerboard2`.}
 }
 \value{
 A list containing AUC value and predict object (for plotting).

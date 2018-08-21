@@ -11,17 +11,17 @@ get_benchmarking_data(scientific_name, limit = 1000,
 \arguments{
 \item{scientific_name}{A character string indicating scientific species name.}
 
-\item{limit}{A numeric value indicating maximum number of occurence records requested.}
+\item{limit}{A numeric value indicating maximum number of occurence records requested. The value has to be positive and has a maximum of 200000 (observations you can download with a single call).}
 
-\item{climate_type}{A character string indicating type of climate variables, either "default" for current climate or "future" for CMIP5 projections.}
+\item{climate_type}{A character string indicating type of climate variables, either `default` for current climate or `future` for CMIP5 projections.}
 
-\item{climate_resolution}{A numeric vlaue indicating the resolution of the raster environmental variables.}
+\item{climate_resolution}{A numeric vlaue indicating the resolution of the raster environmental variables. For a climate type of `default` possible resolutions are: 0.5, 2.5, 5, and 10 (minutes of a degree). For a `future` climate: 2.5, 5, and 10.}
 
-\item{projected_model}{A character string indicates the type of future climate projection.}
+\item{projected_model}{A character string indicates the type of future climate projection. Possible values are: "AC", "BC", "CC", "CE", "CN", "GF", "GD", "GS", "HD", "HG", "HE", "IN", "IP", "MI", "MR", "MC", "MP", "MG", or "NO".}
 
-\item{rcp}{A numeric value indicating representative concentration pathways.}
+\item{rcp}{A numeric value indicating representative concentration pathways. Possible values: 26, 45, 60, or 85.}
 
-\item{year}{A numeric value indicating the number of years into the future for projection.}
+\item{year}{A numeric value indicating the number of years into the future for projection. Can be 50 or 70.}
 }
 \value{
 A list containing the downloaded datasets.

@@ -7,7 +7,7 @@
 plot_dl_map(raster_data, keras_model, custom_fun, map_type = "static")
 }
 \arguments{
-\item{raster_data}{A raster dataset containing the occurence data.}
+\item{raster_data}{A raster dataset containing the occurrence data.}
 
 \item{keras_model}{A trained deep learning model.}
 

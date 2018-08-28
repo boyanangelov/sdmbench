@@ -9,14 +9,14 @@ partition_data(dataset_raster, dataset, env, method)
 \arguments{
 \item{dataset_raster}{A raster dataset.}
 
-\item{dataset}{A dataframe containing species occurences.}
+\item{dataset}{A dataframe containing species occurrences.}
 
 \item{env}{A raster dataset containing the environmental variables.}
 
 \item{method}{A character string representing the desired spatial partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".}
 }
 \value{
-A dataframe partitionined using the selected method.
+A dataframe partitioned using the selected method.
 }
 \description{
 A function that partitions spatial data in order to avoid spatial autocorrelation.

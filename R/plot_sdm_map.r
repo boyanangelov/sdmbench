@@ -1,6 +1,6 @@
 #' Plot SDM map
 #'
-#' @param raster_data A raster dataset containing the occurence data.
+#' @param raster_data A raster dataset containing the occurrence data.
 #' @param bmr_models A list of models extracted from the benchmarking bmr object.
 #' @param model_id A character string indicating the model id of interest.
 #' @param model_iteration A numeric value indicating the model iteration of interest.

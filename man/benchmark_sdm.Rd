@@ -8,16 +8,16 @@ benchmark_sdm(benchmarking_data, learners, dataset_type = "default",
   sample = FALSE)
 }
 \arguments{
-\item{benchmarking_data}{A dataframe from the output of \code{\link{get_benchmarking_data}} function. This dataset contains species occurence coordinates together with a set of environmental data points.}
+\item{benchmarking_data}{A dataframe from the output of \code{\link{get_benchmarking_data}} function. This dataset contains species occurrence coordinates together with a set of environmental data points.}
 
 \item{learners}{A list of mlr learner objects which specify which models to use (i.e. Random Forests).}
 
 \item{dataset_type}{A character string indicating spatial partitioning method. This is used in order to avoid spatial autocorrelation issues.}
 
-\item{sample}{Logical. Indicates whether benchmarking should be done on an undersampled dataset. This is useful for testing model efficiency with an inbalanced dataset (i.e. few observations and many background (pseudo-absence) points).}
+\item{sample}{Logical. Indicates whether benchmarking should be done on an undersampled dataset. This is useful for testing model efficiency with an imbalanced dataset (i.e. few observations and many background (pseudo-absence) points).}
 }
 \value{
-Benchmarking object (class bmr). This object can be acessed by other functions in order to obtain the benchmark results.
+Benchmarking object (class bmr). This object can be accessed by other functions in order to obtain the benchmark results.
 }
 \description{
 A function to benchmark a collection of regular machine learning models.

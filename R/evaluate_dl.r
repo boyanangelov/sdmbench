@@ -2,7 +2,7 @@
 #'
 #' A function to evaluate a deep learning model.
 #' @param model_keras Keras deep learning model.
-#' @param input_data A dataframe containing occurence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.
+#' @param input_data A dataframe containing occurrence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.
 #'
 #' @return A tibble containing the model estimates.
 #' @examples

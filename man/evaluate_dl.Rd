@@ -9,7 +9,7 @@ evaluate_dl(model_keras, input_data)
 \arguments{
 \item{model_keras}{Keras deep learning model.}
 
-\item{input_data}{A dataframe containing occurence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.}
+\item{input_data}{A dataframe containing occurrence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.}
 }
 \value{
 A tibble containing the model estimates.

@@ -2,11 +2,11 @@
 #'
 #' A function that partitions spatial data in order to avoid spatial autocorrelation.
 #' @param dataset_raster A raster dataset.
-#' @param dataset A dataframe containing species occurences.
+#' @param dataset A dataframe containing species occurrences.
 #' @param env A raster dataset containing the environmental variables.
 #' @param method A character string representing the desired spatial partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".
 #'
-#' @return A dataframe partitionined using the selected method.
+#' @return A dataframe partitioned using the selected method.
 #' @examples
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
 #' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$climate_variables, method = "block")

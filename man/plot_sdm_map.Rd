@@ -8,7 +8,7 @@ plot_sdm_map(raster_data, bmr_models, model_id, model_iteration,
   map_type = "static")
 }
 \arguments{
-\item{raster_data}{A raster dataset containing the occurence data.}
+\item{raster_data}{A raster dataset containing the occurrence data.}
 
 \item{bmr_models}{A list of models extracted from the benchmarking bmr object.}
 

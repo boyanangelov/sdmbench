@@ -1,7 +1,7 @@
 #' Plot deep learning SDM map
 #'
 #' A function that enables the plotting of deep learning predictions on a map.
-#' @param raster_data A raster dataset containing the occurence data.
+#' @param raster_data A raster dataset containing the occurrence data.
 #' @param keras_model A trained deep learning model.
 #' @param custom_fun A custom predict function.
 #' @param map_type A logical indicating if the map should be static or interactive.

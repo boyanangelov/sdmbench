@@ -7,7 +7,7 @@
 train_dl(input_data)
 }
 \arguments{
-\item{input_data}{A dataframe containing parsed and processed deep leanring data.}
+\item{input_data}{A dataframe containing parsed and processed deep learning data.}
 }
 \value{
 A list containing the trained deep learning model object and a history object for performance evaluation.

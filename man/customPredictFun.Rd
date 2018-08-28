@@ -9,7 +9,7 @@ customPredictFun(model, data)
 \arguments{
 \item{model}{MLR trained model.}
 
-\item{data}{A dataframe containing occurence data.}
+\item{data}{A dataframe containing occurrence data.}
 }
 \value{
 A vector with predictions.

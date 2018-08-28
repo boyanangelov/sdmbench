@@ -1,6 +1,6 @@
 #' Train deep learning SDM
 #'
-#' @param input_data A dataframe containing parsed and processed deep leanring data.
+#' @param input_data A dataframe containing parsed and processed deep learning data.
 #'
 #' @return A list containing the trained deep learning model object and a history object for performance evaluation.
 #' @examples

@@ -2,7 +2,7 @@
 #'
 #' A collection of functions that enable the usage of mlr model predictions with dismo.
 #' @param model MLR trained model.
-#' @param data A dataframe containing occurence data.
+#' @param data A dataframe containing occurrence data.
 #'
 #' @return A vector with predictions.
 customPredictFun <- function(model, data) {

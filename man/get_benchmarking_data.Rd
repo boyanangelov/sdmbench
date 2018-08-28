@@ -30,5 +30,54 @@ A list containing the downloaded datasets.
 Download data for benchmarking
 }
 \examples{
-result.data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
+# using the default parameters (the only required one is the species name)
+result_data <- get_benchmarking_data("Lynx lynx")
+
+# get a custom number of observations at a higher climate resolution
+# note that downloading higher resolution data can take longer
+result_data <- get_benchmarking_data("Lynx lynx",
+                                     limit = 1500,
+                                     climate_resolution = 5)
+
+# get environmental data for a future climate projection (CMIP5)
+result_data <- get_benchmarking_data("Lynx lynx",
+                                     limit = 1500,
+                                     climate_resolution = 5,
+                                     climate_type = "future")
+
+# specify projection model
+# the default is BC (Beijing Climate Center Climate System Model)
+# note that not all combinations of climate values are possible
+result_data <- get_benchmarking_data("Lynx lynx",
+                                     limit = 1500,
+                                     climate_resolution = 10,
+                                     climate_type = "future",
+                                     projected_model = "AC")
+
+# specify number of years into the future
+# if you are interested in the longer term effects of climate change
+result_data <- get_benchmarking_data("Lynx lynx",
+                                     limit = 1500,
+                                     climate_resolution = 5,
+                                     climate_type = "future",
+                                     year = 70)
+
+# specify RCP (representative concentration pathway)
+# this value represents one of four greenhouse gas concentration trajectories
+result_data <- get_benchmarking_data("Lynx lynx",
+                                     limit = 1500,
+                                     climate_resolution = 5,
+                                     climate_type = "future",
+                                     year = 70,
+                                     rcp = 26)
+
+# after obtaining the data you can inspect its different components
+# look at the raw data
+head(result_data$df_data)
+
+# check class balance (presence / absence)
+table(result_data$df_data$label)
+
+# the result object also contains the data in a raster format
+result_data$raster_data
 }

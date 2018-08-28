@@ -10,7 +10,7 @@ benchmark_sdm(benchmarking_data, learners, dataset_type = "default",
 \arguments{
 \item{benchmarking_data}{A dataframe from the output of \code{\link{get_benchmarking_data}} function. This dataset contains species occurrence coordinates together with a set of environmental data points.}
 
-\item{learners}{A list of mlr learner objects which specify which models to use (i.e. Random Forests).}
+\item{learners}{A list of mlr learner objects which specify which models to use (i.e. Random Forests). The following learners are supported: "classif.logreg", "classif.gbm", "classif.multinom", "classif.naiveBayes", "classif.xgboost", "classif.ksvm".}
 
 \item{dataset_type}{A character string indicating spatial partitioning method. This is used in order to avoid spatial autocorrelation issues.}
 
@@ -21,9 +21,4 @@ Benchmarking object (class bmr). This object can be accessed by other functions 
 }
 \description{
 A function to benchmark a collection of regular machine learning models.
-}
-\examples{
-benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
-learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob"), mlr::makeLearner("classif.logreg", predict.type = "prob"))
-bmr <- benchmark_sdm(benchmarking_data$df_data, learners = learners, dataset_type = "default", sample = FALSE)
 }

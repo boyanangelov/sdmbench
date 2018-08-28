@@ -15,7 +15,7 @@ Imports:
     dismo,
     dplyr,
     e1071,
-    ENMeval,
+    ENMeval (>= 0.3.0),
     gbm,
     keras,
     kernlab,

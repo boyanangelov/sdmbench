@@ -17,8 +17,8 @@ evaluate_maxent <- function(raster_data, method) {
                                  RMvalues = c(1, 2),
                                  fc = c("L"))
 
-    best_model_id <- as.integer(row.names(eval@results[which.max(eval@results$full.AUC), ]))
-    best_auc <- eval@results$full.AUC[[best_model_id]]
+    best_model_id <- as.integer(row.names(eval@results[which.max(eval@results$avg.test.AUC), ]))
+    best_auc <- eval@results$avg.test.AUC[[best_model_id]]
     best_model_pr <- dismo::predict(raster_data$climate_variables, eval@models[[best_model_id]])
     me_results <- list(best_auc = best_auc, best_model_pr = best_model_pr)
 

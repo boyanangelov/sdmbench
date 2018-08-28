@@ -8,8 +8,33 @@
 #'
 #' @return A dataframe partitioned using the selected method.
 #' @examples
-#' benchmarking_data <- get_benchmarking_data("Lynx lynx", limit = 1500, climate_resolution = 10)
-#' benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data, dataset = benchmarking_data$df_data, env = benchmarking_data$raster_data$climate_variables, method = "block")
+#' # download benchmarking data
+#' benchmarking_data <- get_benchmarking_data("Lynx lynx",
+#'                                            limit = 1500,
+#'                                            climate_resolution = 10)
+#'
+#' # apply data partitioning to benchmarking data
+#' # note that this function overwrites the data
+#' benchmarking_data$df_data <- partition_data(
+#'      dataset_raster = benchmarking_data$raster_data,
+#'      dataset = benchmarking_data$df_data,
+#'      env = benchmarking_data$raster_data$climate_variables,
+#'      method = "block")
+#'
+#' # to inspect the partitioning results you can get a contingency table on the
+#' # newly created grouping factor
+#' # in this case you should see four different groups
+#' table(benchmarking_data$df_data$label)
+#'
+#' # use a different partitioning method
+#' benchmarking_data$df_data <- partition_data(
+#'      dataset_raster = benchmarking_data$raster_data,
+#'      dataset = benchmarking_data$df_data,
+#'      env = benchmarking_data$raster_data$climate_variables,
+#'      method = "checkerboard1")
+#'
+#' # you can perform a sanity check here as well, you should see two groups
+#' table(benchmarking_data$df_data$label)
 partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "default") {
         result_dataset <- dataset

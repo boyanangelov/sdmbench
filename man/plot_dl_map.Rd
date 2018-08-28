@@ -22,7 +22,40 @@ An interactive leaflet map, showing the species distribution.
 A function that enables the plotting of deep learning predictions on a map.
 }
 \examples{
-\dontrun{
-plot_dl_map(benchmarking_data$raster_data$climate_variables, keras_results$model, custom_fun = temp_fun, map_type = "static")
+# download benchmarking data
+benchmarking_data <- get_benchmarking_data("Lynx lynx",
+                                           limit = 1500,
+                                           climate_resolution = 10)
+
+# transform benchmarking data into a format suitable for deep learning
+# if you have previously used a partitioning method you should specify it here
+benchmarking_data_dl <- prepare_dl_data(input_data = benchmarking_data$df_data,
+                                       partitioning_type = "default")
+
+# perform sanity check on the transformed dataset
+# for the training set
+head(benchmarking_data_dl$train_tbl)
+table(benchmarking_data_dl$y_train_vec)
+
+# for the test set
+head(benchmarking_data_dl$test_tbl)
+table(benchmarking_data_dl$y_test_vec)
+
+# train neural network
+keras_results <- train_dl(benchmarking_data_dl)
+
+# this function is needed for plotting
+temp_fun <- function(model, input_data) {
+  input_data <- tibble::as_tibble(input_data)
+  data <- recipes::bake(benchmarking_data_dl$rec_obj, newdata = input_data)
+  v <- keras::predict_proba(object = model, x = as.matrix(data))
+  as.vector(v)
 }
+
+# plot SDM map of neural network predictions
+# change the map_type argument if you want a dynamic leaflet map
+plot_dl_map(benchmarking_data$raster_data$climate_variables,
+           keras_results$model,
+           custom_fun = temp_fun,
+           map_type = "static")
 }

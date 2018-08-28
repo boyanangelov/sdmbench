@@ -2,7 +2,7 @@
 % Please edit documentation in R/run_sdmbench.r
 \name{run_sdmbench}
 \alias{run_sdmbench}
-\title{Start sdmbench GUI}
+\title{Start sdmbench GUI in a browser window.}
 \usage{
 run_sdmbench()
 }
@@ -10,5 +10,9 @@ run_sdmbench()
 A shiny app object
 }
 \description{
-Start sdmbench GUI
+This interface can be used to use the complete package functionality without
+writing code.
+}
+\examples{
+run_sdmbench()
 }

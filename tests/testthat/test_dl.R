@@ -20,5 +20,5 @@ keras_evaluation <- evaluate_dl(keras_results$model, result_dl)
 dl_auc <- get_dl_auc(keras_evaluation)
 
 test_that("DL model trained", {
-    expect_gt(dl_auc, 0.6)
+    expect_gt(dl_auc, 0.55)
 })

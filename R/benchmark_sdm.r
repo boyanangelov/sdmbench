@@ -11,8 +11,7 @@
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
-#'                                            climate_resolution = 10,
-#'                                            method = "checkerboard1")
+#'                                            climate_resolution = 10)
 #'
 #' # create a list of learners (algorithms) to compare
 #' # here it is important to specify predict.type as "prob"

@@ -8,6 +8,7 @@
 #'
 #' @return An interactive leaflet map, showing the species distribution.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -36,6 +37,7 @@
 #'              model_id = best_results$learner.id[1],
 #'              model_iteration = best_results$iter[1],
 #'              map_type = "static")
+#'}
 plot_sdm_map <- function(raster_data, bmr_models, model_id, model_iteration, map_type = "static") {
     if (model_id == "classif.logreg") {
         model <- bmr_models$benchmarking_data[[model_id]][[model_iteration]]$learner.model

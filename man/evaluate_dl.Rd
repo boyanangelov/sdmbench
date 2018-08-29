@@ -18,6 +18,7 @@ A tibble containing the model estimates.
 A function to evaluate a deep learning model.
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -49,4 +50,5 @@ plot(keras_results$history)
 # create evaluation tibble containing deep learning training results
 keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 head(keras_evaluation)
+}
 }

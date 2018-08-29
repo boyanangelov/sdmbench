@@ -5,6 +5,7 @@
 #'
 #' @return A dataframe containing the prepared data.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -23,7 +24,7 @@
 #' # for the test set
 #' head(benchmarking_data_dl$test_tbl)
 #' table(benchmarking_data_dl$y_test_vec)
-#'
+#'}
 prepare_dl_data <- function(input_data, partitioning_type) {
     if (partitioning_type %in% c("checkerboard1", "checkerboard2")) {
         input_data$grp_checkerboard <- NULL

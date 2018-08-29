@@ -14,5 +14,7 @@ This interface can be used to use the complete package functionality without
 writing code.
 }
 \examples{
+\dontrun{
 run_sdmbench()
+}
 }

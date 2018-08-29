@@ -16,6 +16,7 @@ A dataframe containing the best model results (learner name, optimal iteration n
 Extract best model performances
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -38,4 +39,5 @@ bmr <- benchmark_sdm(benchmarking_data$df_data,
 # algorithm name, iteration and associated AUC
 best_results <- get_best_model_results(bmr)
 best_results
+}
 }

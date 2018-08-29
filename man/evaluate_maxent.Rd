@@ -18,6 +18,7 @@ A list containing AUC value and predict object (for plotting).
 Evaluate MaxEnt model performance
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -27,4 +28,5 @@ maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block
 
 # get AUC of best model run
 maxent_results$best_auc
+}
 }

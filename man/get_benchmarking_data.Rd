@@ -30,6 +30,7 @@ A list containing the downloaded datasets.
 Download data for benchmarking
 }
 \examples{
+\dontrun{
 # using the default parameters (the only required one is the species name)
 result_data <- get_benchmarking_data("Lynx lynx")
 
@@ -80,4 +81,5 @@ table(result_data$df_data$label)
 
 # the result object also contains the data in a raster format
 result_data$raster_data
+}
 }

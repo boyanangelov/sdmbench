@@ -18,6 +18,7 @@ A dataframe containing the prepared data.
 Parse data for deep learning model training
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -36,5 +37,5 @@ table(benchmarking_data_dl$y_train_vec)
 # for the test set
 head(benchmarking_data_dl$test_tbl)
 table(benchmarking_data_dl$y_test_vec)
-
+}
 }

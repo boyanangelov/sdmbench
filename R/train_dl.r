@@ -4,6 +4,7 @@
 #'
 #' @return A list containing the trained deep learning model object and a history object for performance evaluation.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -31,7 +32,7 @@
 #'
 #' # you can also plot the results
 #' plot(keras_results$history)
-#'
+#'}
 train_dl <- function(input_data) {
     # initialize model
     model_keras <- keras::keras_model_sequential()

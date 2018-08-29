@@ -8,6 +8,7 @@
 #'
 #' @return Benchmarking object (class bmr). This object can be accessed by other functions in order to obtain the benchmark results.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -35,6 +36,7 @@
 #'
 #' # inspect the results
 #' bmr
+#' }
 benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default", sample = FALSE) {
     benchmarking_data$label <- as.factor(benchmarking_data$label)
     if (dataset_type == "default") {

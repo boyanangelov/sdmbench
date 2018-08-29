@@ -5,7 +5,9 @@
 #'
 #' @return A shiny app object
 #' @examples
+#' \dontrun{
 #' run_sdmbench()
+#' }
 run_sdmbench <- function() {
     app_path <- system.file("shiny", package = "sdmbench")
     return(shiny::runApp(app_path, launch.browser = TRUE))

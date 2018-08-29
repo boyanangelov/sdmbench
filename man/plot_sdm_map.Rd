@@ -25,6 +25,7 @@ An interactive leaflet map, showing the species distribution.
 Plot SDM map
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -53,4 +54,5 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
              model_id = best_results$learner.id[1],
              model_iteration = best_results$iter[1],
              map_type = "static")
+}
 }

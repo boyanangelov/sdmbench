@@ -16,6 +16,7 @@ A list containing the trained deep learning model object and a history object fo
 Train deep learning SDM
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -43,5 +44,5 @@ keras_results$history
 
 # you can also plot the results
 plot(keras_results$history)
-
+}
 }

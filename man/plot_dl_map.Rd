@@ -22,6 +22,7 @@ An interactive leaflet map, showing the species distribution.
 A function that enables the plotting of deep learning predictions on a map.
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -58,4 +59,5 @@ plot_dl_map(benchmarking_data$raster_data$climate_variables,
            keras_results$model,
            custom_fun = temp_fun,
            map_type = "static")
+}
 }

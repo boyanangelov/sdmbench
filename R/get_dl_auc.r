@@ -4,6 +4,7 @@
 #'
 #' @return A numeric value indicating the AUC of the tested keras model.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -40,6 +41,7 @@
 #'
 #' # print AUC
 #' keras_auc
+#' }
 get_dl_auc <- function(keras_evaluation) {
     keras_auc <- keras_evaluation %>%
         yardstick::pr_auc(truth, class_prob)

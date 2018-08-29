@@ -23,6 +23,7 @@ Benchmarking object (class bmr). This object can be accessed by other functions 
 A function to benchmark a collection of regular machine learning models.
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -50,4 +51,5 @@ bmr <- benchmark_sdm(benchmarking_data$df_data,
 
 # inspect the results
 bmr
+}
 }

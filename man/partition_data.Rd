@@ -22,6 +22,7 @@ A dataframe partitioned using the selected method.
 A function that partitions spatial data in order to avoid spatial autocorrelation.
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -49,4 +50,5 @@ benchmarking_data$df_data <- partition_data(
 
 # you can perform a sanity check here as well, you should see two groups
 table(benchmarking_data$df_data$label)
+}
 }

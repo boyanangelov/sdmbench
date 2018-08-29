@@ -16,6 +16,7 @@ A numeric value indicating the AUC of the tested keras model.
 Extract AUC from keras evaluation
 }
 \examples{
+\dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
@@ -52,4 +53,5 @@ keras_auc <- get_dl_auc(keras_evaluation)
 
 # print AUC
 keras_auc
+}
 }

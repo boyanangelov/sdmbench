@@ -7,6 +7,7 @@
 #' @param map_type A logical indicating if the map should be static or interactive.
 #' @return An interactive leaflet map, showing the species distribution.
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -43,7 +44,7 @@
 #'            keras_results$model,
 #'            custom_fun = temp_fun,
 #'            map_type = "static")
-
+#'}
 plot_dl_map <- function(raster_data, keras_model, custom_fun, map_type = "static") {
     pr <- dismo::predict(raster_data$climate_variables, keras_model, fun = custom_fun)
     if (map_type == "static") {

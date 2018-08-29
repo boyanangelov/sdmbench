@@ -4,6 +4,7 @@
 #'
 #' @return A dataframe containing the best model results (learner name, optimal iteration number and associated AUC).
 #' @examples
+#' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
 #'                                            limit = 1500,
@@ -26,6 +27,7 @@
 #' # algorithm name, iteration and associated AUC
 #' best_results <- get_best_model_results(bmr)
 #' best_results
+#' }
 get_best_model_results <- function(bmr) {
     perf <- mlr::getBMRPerformances(bmr, as.df = TRUE)
     best_results <- perf %>%

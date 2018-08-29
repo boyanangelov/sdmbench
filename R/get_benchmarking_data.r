@@ -11,6 +11,7 @@
 #' @return A list containing the downloaded datasets.
 #'
 #' @examples
+#' \dontrun{
 #' # using the default parameters (the only required one is the species name)
 #' result_data <- get_benchmarking_data("Lynx lynx")
 #'
@@ -61,6 +62,7 @@
 #'
 #' # the result object also contains the data in a raster format
 #' result_data$raster_data
+#' }
 get_benchmarking_data <- function(scientific_name,
                                   limit = 1000,
                                   climate_type = "default",

@@ -31,13 +31,13 @@ benchmarking_data <- get_benchmarking_data("Lynx lynx",
                                            limit = 1500,
                                            climate_resolution = 10)
 
-# create a list of learners (algorithms) to compare
+# create a list of algorithms to compare
 learners <- list(mlr::makeLearner("classif.randomForest",
                                   predict.type = "prob"),
                  mlr::makeLearner("classif.logreg",
                                   predict.type = "prob"))
 
-# run the benchmarking
+# run the model benchmarking process
 bmr <- benchmark_sdm(benchmarking_data$df_data,
                      learners = learners,
                      dataset_type = "default",
@@ -49,6 +49,7 @@ bmr <- benchmark_sdm(benchmarking_data$df_data,
 best_results <- get_best_model_results(bmr)
 
 # plot the SDM map of the best performing model
+# change the map_type argument if you want a dynamic leaflet map
 plot_sdm_map(raster_data = benchmarking_data$raster_data$climate_variables,
              bmr_models = bmr$learners,
              model_id = best_results$learner.id[1],

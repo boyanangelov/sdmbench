@@ -7,8 +7,7 @@
 #' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500,
-#'                                            climate_resolution = 10)
+#'                                            limit = 1500)
 #'
 #' # transform benchmarking data into a format suitable for deep learning
 #' # if you have previously used a partitioning method you should specify it here
@@ -30,7 +29,7 @@
 #' # inspect results
 #' keras_results$history
 #'
-#' # you can also plot the results
+#' # you can also plot them
 #' plot(keras_results$history)
 #'}
 train_dl <- function(input_data) {

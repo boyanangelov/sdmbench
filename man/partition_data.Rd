@@ -25,8 +25,7 @@ A function that partitions spatial data in order to avoid spatial autocorrelatio
 \dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
-                                           limit = 1500,
-                                           climate_resolution = 10)
+                                           limit = 1500)
 
 # apply data partitioning to benchmarking data
 # note that this function overwrites the data
@@ -41,7 +40,7 @@ benchmarking_data$df_data <- partition_data(
 # in this case you should see four different groups
 table(benchmarking_data$df_data$label)
 
-# use a different partitioning method
+# use a different spatial partitioning method
 benchmarking_data$df_data <- partition_data(
      dataset_raster = benchmarking_data$raster_data,
      dataset = benchmarking_data$df_data,

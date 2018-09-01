@@ -7,8 +7,7 @@
 #' \dontrun{
 #' # download benchmarking data
 #' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500,
-#'                                            climate_resolution = 10)
+#'                                            limit = 1500)
 #'
 #' # transform benchmarking data into a format suitable for deep learning
 #' # if you have previously used a partitioning method you should specify it here
@@ -27,16 +26,16 @@
 #' # train neural network
 #' keras_results <- train_dl(benchmarking_data_dl)
 #'
-#' # inspect results
+#' # inspect training results
 #' keras_results$history
 #'
-#' # you can also plot the results
+#' # you can also plot them
 #' plot(keras_results$history)
 #'
-#' # create evaluation tibble containing deep learning training results
+#' # create evaluation tibble containing training results
 #' keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 #'
-#' # compute neural network AUC
+#' # compute AUC
 #' keras_auc <- get_dl_auc(keras_evaluation)
 #'
 #' # print AUC

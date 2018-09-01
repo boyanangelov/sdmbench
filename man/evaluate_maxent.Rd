@@ -21,10 +21,10 @@ Evaluate MaxEnt model performance
 \dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
-                                           limit = 1500,
-                                           climate_resolution = 10)
+                                           limit = 1500)
 # run MaxEnt evaluation
-maxent_results <- evaluate_maxent(benchmarking_data$raster_data, method = "block")
+maxent_results <- evaluate_maxent(raster_data = benchmarking_data$raster_data,
+                                  method = "block")
 
 # get AUC of best model run
 maxent_results$best_auc

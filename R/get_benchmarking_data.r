@@ -12,11 +12,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' # using the default parameters (the only required one is the species name)
+#' # get data using the default parameters (the only required one is the species name)
 #' result_data <- get_benchmarking_data("Lynx lynx")
 #'
 #' # get a custom number of observations at a higher climate resolution
-#' # note that downloading higher resolution data can take longer
+#' # note that downloading higher resolution data takes longer
 #' result_data <- get_benchmarking_data("Lynx lynx",
 #'                                      limit = 1500,
 #'                                      climate_resolution = 5)
@@ -54,13 +54,13 @@
 #'                                      rcp = 26)
 #'
 #' # after obtaining the data you can inspect its different components
-#' # look at the raw data
+#' # raw data
 #' head(result_data$df_data)
 #'
 #' # check class balance (presence / absence)
 #' table(result_data$df_data$label)
 #'
-#' # the result object also contains the data in a raster format
+#' # the result object also contains the data in raster format
 #' result_data$raster_data
 #' }
 get_benchmarking_data <- function(scientific_name,

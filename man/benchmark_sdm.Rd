@@ -26,30 +26,28 @@ A function to benchmark a collection of regular machine learning models.
 \dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
-                                           limit = 1500,
-                                           climate_resolution = 10)
+                                           limit = 1500)
 
-# create a list of learners (algorithms) to compare
+# create a list of algorithms to compare
 # here it is important to specify predict.type as "prob"
 learners <- list(mlr::makeLearner("classif.randomForest",
                                   predict.type = "prob"),
                  mlr::makeLearner("classif.logreg",
                                  predict.type = "prob"))
 
-# run the benchmarking
-# if a different data partitioning type has been used, you should specify it
+# run the model benchmarking process
+# if you have previously used a partitioning method you should specify it here
 bmr <- benchmark_sdm(benchmarking_data$df_data,
                     learners = learners,
-                    dataset_type = "checkerboard1",
-                    sample = FALSE)
+                    dataset_type = "default")
 
-# if you are interested in benchmarking an imbalanced dataset you can undersample
+# for benchmarking an imbalanced dataset you can undersample
 bmr <- benchmark_sdm(benchmarking_data$df_data,
                     learners = learners,
-                    dataset_type = "checkerboard1",
+                    dataset_type = "default",
                     sample = TRUE)
 
-# inspect the results
+# inspect the benchmark results
 bmr
 }
 }

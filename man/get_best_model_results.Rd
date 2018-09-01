@@ -19,23 +19,22 @@ Extract best model performances
 \dontrun{
 # download benchmarking data
 benchmarking_data <- get_benchmarking_data("Lynx lynx",
-                                           limit = 1500,
-                                           climate_resolution = 10)
+                                           limit = 1500)
 
-# create a list of learners (algorithms) to compare
+# create a list of algorithms to compare
 learners <- list(mlr::makeLearner("classif.randomForest",
                                   predict.type = "prob"),
                  mlr::makeLearner("classif.logreg",
                                   predict.type = "prob"))
 
-# run the benchmarking
+# run the model benchmarking process
 bmr <- benchmark_sdm(benchmarking_data$df_data,
                      learners = learners,
                      dataset_type = "default",
                      sample = FALSE)
 
 # get best model results
-# you should obtaib a dataframe containing the highest performing (by AUC)
+# you should obtain a dataframe containing the highest performing (by AUC)
 # algorithm name, iteration and associated AUC
 best_results <- get_best_model_results(bmr)
 best_results

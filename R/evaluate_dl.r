@@ -38,6 +38,7 @@
 #' keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
 #' head(keras_evaluation)
 #' }
+#' @export
 evaluate_dl <- function(model_keras, input_data) {
     yhat_keras_class_vec <- keras::predict_classes(object = model_keras,
                                                    x = as.matrix(input_data$test_tbl)) %>%

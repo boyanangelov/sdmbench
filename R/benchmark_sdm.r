@@ -35,6 +35,7 @@
 #' # inspect the benchmark results
 #' bmr
 #' }
+#' @export
 benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default", sample = FALSE) {
     benchmarking_data$label <- as.factor(benchmarking_data$label)
     if (dataset_type == "default") {

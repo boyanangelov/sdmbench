@@ -63,6 +63,7 @@
 #' # the result object also contains the data in raster format
 #' result_data$raster_data
 #' }
+#' @export
 get_benchmarking_data <- function(scientific_name,
                                   limit = 1000,
                                   climate_type = "default",

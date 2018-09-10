@@ -1,5 +1,8 @@
 #' Parse data for deep learning model training
 #'
+#' @importFrom recipes all_predictors
+#' @importFrom recipes all_outcomes
+#'
 #' @param input_data A dataframe containing the input data.
 #' @param partitioning_type A character string indicating the desired spatial data partitioning method. Can be "default", "block", "checkerboard1", or "checkerboard2".
 #'
@@ -24,6 +27,7 @@
 #' head(benchmarking_data_dl$test_tbl)
 #' table(benchmarking_data_dl$y_test_vec)
 #'}
+#'@export
 prepare_dl_data <- function(input_data, partitioning_type) {
     if (partitioning_type %in% c("checkerboard1", "checkerboard2")) {
         input_data$grp_checkerboard <- NULL

@@ -1,5 +1,7 @@
 #' Train deep learning SDM
 #'
+#' @importFrom magrittr %>%
+#'
 #' @param input_data A dataframe containing parsed and processed deep learning data.
 #'
 #' @return A list containing the trained deep learning model object and a history object for performance evaluation.
@@ -32,6 +34,7 @@
 #' # you can also plot them
 #' plot(keras_results$history)
 #'}
+#'@export
 train_dl <- function(input_data) {
     # initialize model
     model_keras <- keras::keras_model_sequential()

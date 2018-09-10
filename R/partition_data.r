@@ -36,6 +36,7 @@
 #' # you can perform a sanity check here as well, you should see two groups
 #' table(benchmarking_data$df_data$label)
 #' }
+#' @export
 partition_data <- function(dataset_raster, dataset, env, method) {
     if (method == "default") {
         result_dataset <- dataset

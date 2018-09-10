@@ -16,6 +16,7 @@
 #' # get AUC of best model run
 #' maxent_results$best_auc
 #' }
+#' @export
 evaluate_maxent <- function(raster_data, method) {
     eval <- ENMeval::ENMevaluate(occ = raster_data$coords_presence,
                                  env = raster_data$climate_variables,

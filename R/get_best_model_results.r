@@ -27,6 +27,7 @@
 #' best_results <- get_best_model_results(bmr)
 #' best_results
 #' }
+#' @export
 get_best_model_results <- function(bmr) {
     perf <- mlr::getBMRPerformances(bmr, as.df = TRUE)
     best_results <- perf %>%

@@ -1,5 +1,7 @@
 #' Extract AUC from keras evaluation
 #'
+#' @importFrom magrittr %>%
+#'
 #' @param keras_evaluation A table containing the keras evaluation.
 #'
 #' @return A numeric value indicating the AUC of the tested keras model.
@@ -41,6 +43,7 @@
 #' # print AUC
 #' keras_auc
 #' }
+#' @export
 get_dl_auc <- function(keras_evaluation) {
     keras_auc <- keras_evaluation %>%
         yardstick::pr_auc(truth, class_prob)

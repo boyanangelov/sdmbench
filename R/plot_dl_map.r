@@ -44,6 +44,7 @@
 #'            custom_fun = temp_fun,
 #'            map_type = "static")
 #'}
+#'@export
 plot_dl_map <- function(raster_data, keras_model, custom_fun, map_type = "static") {
     pr <- dismo::predict(raster_data$climate_variables, keras_model, fun = custom_fun)
     if (map_type == "static") {

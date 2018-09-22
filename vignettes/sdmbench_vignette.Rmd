@@ -181,6 +181,7 @@ learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob")
 Now we are ready to start the benchmarking process. The `benchmark_sdm` function needs the same `dataset_type` as the partitioning `method` in `partition_data`. The additional `sample` argument we can specify if we want to undersample the occurences. This can be interesting if we want to select a method that works well with a limited number observations.
 
 ```{r}
+benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
 bmr <- benchmark_sdm(benchmarking_data$df_data,
                      learners = learners, 
                      dataset_type = "block", 

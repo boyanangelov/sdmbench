@@ -65,9 +65,9 @@ Downloading and prepare benchmarking data:
 
 ``` r
 library(sdmbench)
-#> sdmbench: Tools for benchmarking Species Distribution Models
+#> sdmbench: Tools for benchmarking Species Distribution Models 
 #> ============================================================
-#> For more information visit http://github.com/
+#> For more information visit http://github.com/ 
 #> To start the GUI: run_sdmbench()
 
 benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, climate_resolution = 10)
@@ -97,7 +97,8 @@ head(benchmarking_data$df_data)
 #> 6     5    78   273    20   273    20     1
 ```
 
-Benchmarking machine learning models on parsed species occurence data:
+Preparing data for benchmarking (i.e. add a spatial partitioning
+method):
 
 ``` r
 data("wrld_simpl", package = "maptools")
@@ -113,10 +114,12 @@ learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob")
 benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
 ```
 
+Benchmarking machine learning models on parsed species occurence data:
+
 ``` r
-bmr <- benchmark_sdm(benchmarking_data$df_data,
-                     learners = learners,
-                     dataset_type = "block",
+bmr <- benchmark_sdm(benchmarking_data$df_data, 
+                     learners = learners, 
+                     dataset_type = "block", 
                      sample = FALSE)
 best_results <- get_best_model_results(bmr)
 best_results
@@ -124,10 +127,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     4 0.794
-#> 2 classif.logreg           4 0.468
-#> 3 classif.rpart            4 0.712
-#> 4 classif.ksvm             1 0.876
+#> 1 classif.randomForest     3 0.823
+#> 2 classif.logreg           3 0.540
+#> 3 classif.rpart            3 0.684
+#> 4 classif.ksvm             1 0.886
 ```
 
 Plot best model results:
@@ -139,8 +142,8 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data,
             model_id = best_results$learner.id[1],
             model_iteration = best_results$iter[1],
              map_type = "static") +
-            raster::plot(wrld_simpl,
-                         add = TRUE,
+            raster::plot(wrld_simpl, 
+                         add = TRUE, 
                          border = "darkgrey")
 ```
 
@@ -148,15 +151,18 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data,
 
     #> integer(0)
 
-A good starting point to discover the full package functionality is to start the GUI with `run_sdmbench()`. Here are some screenshots:
+A good starting point to discover the full package functionality is to
+start the GUI with `run_sdmbench()`. Here are some screenshots:
 
-![](vignettes/gui_screenshots/screenshot_1.png) <br> <br> ![](vignettes/gui_screenshots/screenshot_2.png)
+![](vignettes/gui_screenshots/screenshot_1.png) <br> <br>
+![](vignettes/gui_screenshots/screenshot_2.png)
 
 Vignette
 --------
 
 A thorough introduction to the package is available as a vignette in the
-package, and [online](https://boyanangelov.com/materials/sdmbench_vignette.html).
+package, and
+[online](https://boyanangelov.com/materials/sdmbench_vignette.html).
 
 ``` r
 # open vignette
@@ -166,12 +172,14 @@ vignette("sdmbench")
 Tests
 -----
 
-The package tests are in the `tests` directory, and can be run by using `devtools::test` or Ctrl/Cmd + Shift + T within RStudio.
+The package tests are in the `tests` directory, and can be run by using
+`devtools::test` or Ctrl/Cmd + Shift + T within RStudio.
 
 Contributors
 ------------
 
-Contributions are welcome and guidelines are stated in `CONTRIBUTING.md`.
+Contributions are welcome and guidelines are stated in
+`CONTRIBUTING.md`.
 
 License
 -------

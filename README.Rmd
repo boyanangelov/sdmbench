@@ -58,7 +58,8 @@ benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, c
 head(benchmarking_data$df_data)
 ```
 
-Benchmarking machine learning models on parsed species occurence data:
+
+Preparing data for benchmarking (i.e. add a spatial partitioning method):
 
 ```{r}
 data("wrld_simpl", package = "maptools")
@@ -74,7 +75,7 @@ learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob")
 benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
 ```
 
-
+Benchmarking machine learning models on parsed species occurence data:
 
 ```{r message=FALSE, warning=FALSE}
 bmr <- benchmark_sdm(benchmarking_data$df_data, 

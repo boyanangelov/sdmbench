@@ -1,20 +1,34 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench) [![DOI](https://zenodo.org/badge/138335161.svg)](https://zenodo.org/badge/latestdoi/138335161)
+[![Build
+Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
+[![DOI](https://zenodo.org/badge/138335161.svg)](https://zenodo.org/badge/latestdoi/138335161)
 
 sdmbench
 ========
 
 ![](logo.png)
 
-Species Distribution Modeling (SDM) is a field of increasing importance in ecology<sup>[1](#footnote1)</sup>. Several popular applications of SDMs are understanding climate change effects on species<sup>[2](#footnote2)</sup>, natural reserve planning<sup>[3](#footnote3)</sup> and invasive species monitoring<sup>[4](#footnote4)</sup>. The `sdmbench` package solves several issues related to the development and evaluation of those models by providing a consistent benchmarking workflow:
+Species Distribution Modeling (SDM) is a field of increasing importance
+in ecology<sup>[1](#footnote1)</sup>. Several popular applications of
+SDMs are understanding climate change effects on
+species<sup>[2](#footnote2)</sup>, natural reserve
+planning<sup>[3](#footnote3)</sup> and invasive species
+monitoring<sup>[4](#footnote4)</sup>. The `sdmbench` package solves
+several issues related to the development and evaluation of those models
+by providing a consistent benchmarking workflow:
 
 -   consistent species occurence data acquisition and preprocessing
--   consistent environmental data acquisition and preprocessing (both current data and future projections)
+-   consistent environmental data acquisition and preprocessing (both
+    current data and future projections)
 -   consistent spatial data partitioning
 -   integration of a wide variety of machine learning models
 -   graphical user interface for non/semi-technical users
 
-The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest. Such an analysis is useful to researchers who want to avoid issues of model selection and evaluation, and want to rapidly test prototypes of species distribution models.
+The end result of a `sdmbench` SDM analysis is to determine the model -
+data processing combination that results in the highest predictive power
+for the species of interest. Such an analysis is useful to researchers
+who want to avoid issues of model selection and evaluation, and want to
+rapidly test prototypes of species distribution models.
 
 Installation
 ------------
@@ -24,25 +38,36 @@ Installation
 devtools::install_github("boyanangelov/sdmbench")
 ```
 
-There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command). Note that this step requires a working Python installation on your system. Most modern operating systems have Python pre-installed, but if you are not sure you can check the [official website](https://www.python.org/).
+There are several additional packages you need to install if you want to
+access the complete sdmbench functionality. First Tensorflow. You can
+use the `keras` package to install that (it is installed by the previous
+command). Note that this step requires a working Python installation on
+your system. Most modern operating systems have Python pre-installed,
+but if you are not sure you can check the [official
+website](https://www.python.org/).
 
 ``` r
 # consult the keras documentation if you want GPU support
 keras::install_keras(tensorflow = "default")
 ```
 
-Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent). Note that this requires Java which you can get get from [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+Additionally you will need MaxEnt. Installation instructions are
+available
+[here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent).
+Note that this requires Java which you can get get from
+[here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
 
 Examples
 --------
 
-Here are several examples of what you can do with `sdmbench`. Downloading and prepare benchmarking data:
+Here are several examples of what you can do with `sdmbench`.
+Downloading and prepare benchmarking data:
 
 ``` r
 library(sdmbench)
-#> sdmbench: Tools for benchmarking Species Distribution Models 
+#> sdmbench: Tools for benchmarking Species Distribution Models
 #> ============================================================
-#> For more information visit http://github.com/ 
+#> For more information visit http://github.com/
 #> To start the GUI: run_sdmbench()
 
 benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, climate_resolution = 10)
@@ -75,9 +100,23 @@ head(benchmarking_data$df_data)
 Benchmarking machine learning models on parsed species occurence data:
 
 ``` r
-bmr <- benchmark_sdm(benchmarking_data$df_data, 
-                     learners = learners, 
-                     dataset_type = "block", 
+data("wrld_simpl", package = "maptools")
+benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data,
+                                            dataset = benchmarking_data$df_data,
+                                            env = benchmarking_data$raster_data$climate_variables,
+                                            method = "block")
+
+learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob"),
+                 mlr::makeLearner("classif.logreg", predict.type = "prob"),
+                 mlr::makeLearner("classif.rpart", predict.type = "prob"),
+                 mlr::makeLearner("classif.ksvm", predict.type = "prob"))
+benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
+```
+
+``` r
+bmr <- benchmark_sdm(benchmarking_data$df_data,
+                     learners = learners,
+                     dataset_type = "block",
                      sample = FALSE)
 best_results <- get_best_model_results(bmr)
 best_results
@@ -85,10 +124,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     1 0.902
-#> 2 classif.logreg           1 0.646
-#> 3 classif.rpart            1 0.798
-#> 4 classif.ksvm             1 0.895
+#> 1 classif.randomForest     4 0.794
+#> 2 classif.logreg           4 0.468
+#> 3 classif.rpart            4 0.712
+#> 4 classif.ksvm             1 0.876
 ```
 
 Plot best model results:
@@ -100,8 +139,8 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data,
             model_id = best_results$learner.id[1],
             model_iteration = best_results$iter[1],
              map_type = "static") +
-            raster::plot(wrld_simpl, 
-                         add = TRUE, 
+            raster::plot(wrld_simpl,
+                         add = TRUE,
                          border = "darkgrey")
 ```
 
@@ -116,7 +155,8 @@ A good starting point to discover the full package functionality is to start the
 Vignette
 --------
 
-A thorough introduction to the package is available as a vignette in the package, and [online](https://boyanangelov.com/materials/sdmbench_vignette.html).
+A thorough introduction to the package is available as a vignette in the
+package, and [online](https://boyanangelov.com/materials/sdmbench_vignette.html).
 
 ``` r
 # open vignette
@@ -141,10 +181,18 @@ MIT (`LICENSE.md`)
 References
 ----------
 
-<a name="footnote1">1</a>. Elith, J. & Leathwick, J. R. Species Distribution Models: Ecological Explanation and Prediction Across Space and Time. Annu. Rev. Ecol. Evol. Syst. 40, 677–697 (2009).
+<a name="footnote1">1</a>. Elith, J. & Leathwick, J. R. Species
+Distribution Models: Ecological Explanation and Prediction Across Space
+and Time. Annu. Rev. Ecol. Evol. Syst. 40, 677–697 (2009).
 
-<a name="footnote2">2</a>. Austin, M. P. & Van Niel, K. P. Improving species distribution models for climate change studies: Variable selection and scale. J. Biogeogr. 38, 1–8 (2011).
+<a name="footnote2">2</a>. Austin, M. P. & Van Niel, K. P. Improving
+species distribution models for climate change studies: Variable
+selection and scale. J. Biogeogr. 38, 1–8 (2011).
 
-<a name="footnote3">3</a>. Guisan, A. et al. Predicting species distributions for conservation decisions. Ecol. Lett. 16, 1424–1435 (2013).
+<a name="footnote3">3</a>. Guisan, A. et al. Predicting species
+distributions for conservation decisions. Ecol. Lett. 16, 1424–1435
+(2013).
 
-<a name="footnote4">4</a>. Descombes, P. et al. Monitoring and distribution modelling of invasive species along riverine habitats at very high resolution. Biol. Invasions 18, 3665–3679 (2016).
+<a name="footnote4">4</a>. Descombes, P. et al. Monitoring and
+distribution modelling of invasive species along riverine habitats at
+very high resolution. Biol. Invasions 18, 3665–3679 (2016).

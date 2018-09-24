@@ -60,7 +60,7 @@ head(benchmarking_data$df_data)
 
 Benchmarking machine learning models on parsed species occurence data:
 
-```{r include=FALSE}
+```{r}
 data("wrld_simpl", package = "maptools")
 benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data,
                                             dataset = benchmarking_data$df_data,

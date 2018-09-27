@@ -33,9 +33,9 @@ Steady improvements in analytical tools (new machine learning algorithms and fas
 
 `sdmbench` obtains species occurrence data and environmental variables from GBIF (https://www.gbif.org/) and Worldclim (http://worldclim.org/), respectively. The user can also specify the type (historical data or IPCC projections) and resolution of the climate data. These popular and stable data repositories ensure high data quality. The data processing pipeline relies on external packages. The scrubr [@scrubr] package is used to clean the occurrence data (i.e. removal of duplicates and unlikely coordinates). ENMEval provides domain-specific cross-validation to mitigate spatial autocorrelation effects that might adversely affect model accuracy. An additional processing option that can be specified is data undersampling. This feature introduces synthetic class imbalance in the data that in turn can test the effectiveness of model training on sparse datasets.
 
-`sdmbench` v0.1.2 supports 10 popular machine learning methods in addition to MaxEnt, including neural networks (Tensorflow via Keras). Methods can be compared quantitatively by computing their Area Under the Curve (AUC, a standard procedure for machine learning classification tasks), and visually by inspecting the resulting species distribution maps. The same workflow can also be accomplished in the GUI, allowing for rapid exploration and prototyping.
+`sdmbench` v0.1.3 supports 10 popular machine learning methods in addition to MaxEnt, including neural networks (Tensorflow via Keras). Methods can be compared quantitatively by computing their Area Under the Curve (AUC, a standard procedure for machine learning classification tasks), and visually by inspecting the resulting species distribution maps. The same workflow can also be accomplished in the GUI, allowing for rapid exploration and prototyping.
 
-`sdmbench` is available from GitHub (https://github.com/boyanangelov/sdmbench), and archived on Zenodo (https://doi.org/10.5281/zenodo.1308199).
+`sdmbench` is available from GitHub (https://github.com/boyanangelov/sdmbench), and archived on Zenodo (http://doi.org/10.5281/zenodo.1436376).
 
 # Acknowledgements
 

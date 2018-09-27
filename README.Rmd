@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 [![Build Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
-[![DOI](https://zenodo.org/badge/138335161.svg)](https://zenodo.org/badge/latestdoi/138335161)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1436376.svg)](https://doi.org/10.5281/zenodo.1436376)
 
 # sdmbench
 

@@ -1,7 +1,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Build
 Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
-[![DOI](https://zenodo.org/badge/138335161.svg)](https://zenodo.org/badge/latestdoi/138335161)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1436376.svg)](https://doi.org/10.5281/zenodo.1436376)
 
 sdmbench
 ========
@@ -85,15 +85,15 @@ head(benchmarking_data$df_data)
 #> 1  219  133   57 3302  317   86  231  257  172   257   172   516   103
 #> 2  225  171   60 3677  347   64  283  251  171   262   171   427   111
 #> 3  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 4  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 5  206  105   59 2413  287  110  177  235  173   235   173   896   124
+#> 4  206  105   59 2413  287  110  177  235  173   235   173   896   124
+#> 5  178  162   81  562  278   80  198  185  175   185   171   721   133
 #> 6  224  136   56 3476  328   87  241  264  174   264   174   519    94
 #>   bio14 bio15 bio16 bio17 bio18 bio19 label
 #> 1     5    80   284    16   284    16     1
 #> 2     0   109   287     1   193     1     1
 #> 3    22    54   274    89   274   145     1
-#> 4    22    54   274    89   274   145     1
-#> 5    29    45   339    96   339    96     1
+#> 4    29    45   339    96   339    96     1
+#> 5    22    54   274    89   274   145     1
 #> 6     5    78   273    20   273    20     1
 ```
 
@@ -127,9 +127,9 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     3 0.823
-#> 2 classif.logreg           3 0.540
-#> 3 classif.rpart            3 0.684
+#> 1 classif.randomForest     4 0.865
+#> 2 classif.logreg           4 0.534
+#> 3 classif.rpart            4 0.567
 #> 4 classif.ksvm             1 0.886
 ```
 

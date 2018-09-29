@@ -2,6 +2,7 @@
 [![Build
 Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1436376.svg)](https://doi.org/10.5281/zenodo.1436376)
+[![DOI](http://joss.theoj.org/papers/10.21105/joss.00847/status.svg)](https://doi.org/10.21105/joss.00847)
 
 sdmbench
 ========
@@ -127,10 +128,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     4 0.865
-#> 2 classif.logreg           4 0.534
-#> 3 classif.rpart            4 0.567
-#> 4 classif.ksvm             1 0.886
+#> 1 classif.randomForest     3 0.849
+#> 2 classif.logreg           3 0.569
+#> 3 classif.rpart            3 0.712
+#> 4 classif.ksvm             1 0.883
 ```
 
 Plot best model results:

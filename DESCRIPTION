@@ -1,7 +1,7 @@
 Package: sdmbench
 Type: Package
 Title: Benchmark Species Distribution Models
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Boyan Angelov <boyan.angelov@gmail.com>

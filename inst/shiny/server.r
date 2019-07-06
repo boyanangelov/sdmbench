@@ -19,7 +19,7 @@ server <- function(input, output) {
             },
             
             error = function(e) {
-                # parsing error
+                # catch parsing error
                 stop(safeError(e))
             })
             data <- list(NULL, df_data = df)
@@ -27,10 +27,7 @@ server <- function(input, output) {
             v$partitioning_type <- input$data_partitioning_type
             
             shinyjs::enable("go_bmr")
-            shinyjs::enable("go_maxent")
-            shinyjs::enable("go_profile")
-            shinyjs::enable("go_dl")
-            showNotification("Custom data uploaded")
+            showNotification("Custom data parsed")
         } else {
             showNotification("Data format error")
         }

@@ -12,6 +12,7 @@ dashboardPage(
         ),
         tags$hr(),
         checkboxInput("custom_data", "Use custom data?", FALSE),
+        tags$p("* at the moment just for General Models", style  = "margin-left: 15px;"),
         fileInput(
             "file1",
             "Upload custom data",
@@ -99,6 +100,7 @@ dashboardPage(
                             leaflet::leafletOutput("occ_map"),
                             title = "Occurence Map",
                             collapsible = TRUE,
+                            collapsed = TRUE,
                             status = "success",
                             solidHeader = TRUE,
                             width = 12

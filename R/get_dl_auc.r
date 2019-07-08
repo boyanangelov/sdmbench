@@ -45,8 +45,9 @@
 #' }
 #' @export
 get_dl_auc <- function(keras_evaluation) {
-    keras_auc <- keras_evaluation %>%
+    keras_auc_df <- keras_evaluation %>%
         yardstick::pr_auc(truth, class_prob)
+    
 
-    return(round(keras_auc, 3))
+    return(round(keras_auc_df$.estimate, 3))
 }

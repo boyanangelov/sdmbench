@@ -74,7 +74,7 @@ library(sdmbench)
 
 In addition to the package you will need working Python and Java installations for deep learning and MaxEnt respectively. The installation procedures differ between operating systems, so you should consult the official documentations at the [Python](https://www.python.org/) and [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html) websites. After installing Python you should use the `keras` package to set up Tensorflow:
 
-```{r}
+```{r include=FALSE}
 keras::install_keras(tensorflow = "default")
 ```
 
@@ -291,7 +291,7 @@ plot(keras_results$history, main = "DL Training History")
 
 In order to compare with the other regular models and MaxEnt we need the AUC:
 
-```{r}
+```{r echo=TRUE}
 get_dl_auc(keras_evaluation)
 ```
 
@@ -300,7 +300,7 @@ In this case the model performance is quite low as compared to MaxEnt and Random
 ```{r fig.height=4, fig.width=4, message=FALSE, warning=FALSE}
 temp_fun <- function(model, input_data) {
             input_data <- tibble::as_tibble(input_data)
-            data <- recipes::bake(benchmarking_data_dl$rec_obj, newdata = input_data)
+            data <- recipes::bake(benchmarking_data_dl$rec_obj, new_data = input_data)
 
             v <- keras::predict_proba(object = model, x = as.matrix(data))
             as.vector(v)

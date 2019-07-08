@@ -1,7 +1,7 @@
 Package: sdmbench
 Type: Package
 Title: Benchmark Species Distribution Models
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
   role = c("aut", "cre"))
 Maintainer: Boyan Angelov <boyan.angelov@gmail.com>
@@ -10,7 +10,7 @@ Description: This package provides tools and functions to benchmark Species Dist
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Imports:
     dismo,
     dplyr,
@@ -31,7 +31,6 @@ Imports:
     rgdal,
     rpart,
     rsample,
-    RWeka,
     scrubr,
     shiny,
     shinydashboard,
@@ -41,5 +40,6 @@ Imports:
     yardstick,
 Suggests: testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    RWeka
 VignetteBuilder: knitr

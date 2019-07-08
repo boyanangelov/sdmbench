@@ -32,7 +32,7 @@
 #' # this function is needed for plotting
 #' temp_fun <- function(model, input_data) {
 #'   input_data <- tibble::as_tibble(input_data)
-#'   data <- recipes::bake(benchmarking_data_dl$rec_obj, newdata = input_data)
+#'   data <- recipes::bake(benchmarking_data_dl$rec_obj, new_data = input_data)
 #'   v <- keras::predict_proba(object = model, x = as.matrix(data))
 #'   as.vector(v)
 #' }

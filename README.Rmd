@@ -102,6 +102,16 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data,
                          border = "darkgrey")
 ```
 
+## Using custom data
+
+If you are interested in bringing your own data (rather than using GBIF) you can toggle the checkmark in the sidebar and upload it. The required format is as follows:
+
+|  bio1 	|  bio2 	| bio3  	|  bio4 	|  bio [...] 	|  bio 19 	|  label 	|
+|---	|---	|---	|---	|---	|---	|---	|
+|   	|   	|   	|   	|   	|   	|   	|
+|   	|   	|   	|   	|   	|   	|   	|
+
+where `label` is `0/1`. At the moment custom data is supported only for `General Models`, and has no mapping capability.
 
 A good starting point to discover the full package functionality is to start the GUI with `run_sdmbench()`. Here are some screenshots:
 

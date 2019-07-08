@@ -4,7 +4,6 @@ language: R
 dist: trusty
 sudo: required
 warnings_are_errors: false
-before_install: R -e 'source("https://install-github.me/r-lib/remotes")'
 r_binary_packages:
   - dismo
   - dplyr
@@ -23,7 +22,6 @@ r_binary_packages:
   - shinyjs
   - tidyr
   - xgboost
-cache: packages
 addons:
   apt:
     packages:

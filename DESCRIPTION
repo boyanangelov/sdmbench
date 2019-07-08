@@ -31,7 +31,6 @@ Imports:
     rgdal,
     rpart,
     rsample,
-    RWeka,
     scrubr,
     shiny,
     shinydashboard,
@@ -41,5 +40,6 @@ Imports:
     yardstick,
 Suggests: testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    RWeka
 VignetteBuilder: knitr

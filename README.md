@@ -1,4 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 [![Build
 Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1436376.svg)](https://doi.org/10.5281/zenodo.1436376)
@@ -83,19 +84,19 @@ benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, c
 #> [1] "Done!"
 head(benchmarking_data$df_data)
 #>   bio1 bio2 bio3 bio4 bio5 bio6 bio7 bio8 bio9 bio10 bio11 bio12 bio13
-#> 1  219  133   57 3302  317   86  231  257  172   257   172   516   103
-#> 2  225  171   60 3677  347   64  283  251  171   262   171   427   111
-#> 3  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 4  206  105   59 2413  287  110  177  235  173   235   173   896   124
-#> 5  178  162   81  562  278   80  198  185  175   185   171   721   133
-#> 6  224  136   56 3476  328   87  241  264  174   264   174   519    94
+#> 1  181  132   59 3078  283   60  223  187  141   220   141   425    48
+#> 2  180  142   58 3336  292   51  241  210  136   222   136   410    50
+#> 3  208  115   86  259  275  142  133  208  207   211   206   956   168
+#> 4  180  142   58 3336  292   51  241  210  136   222   136   410    50
+#> 5  215  129   56 3244  311   84  227  251  168   251   168   673   120
+#> 6  236  167   87  691  335  145  190  233  228   244   228   505   133
 #>   bio14 bio15 bio16 bio17 bio18 bio19 label
-#> 1     5    80   284    16   284    16     1
-#> 2     0   109   287     1   193     1     1
-#> 3    22    54   274    89   274   145     1
-#> 4    29    45   339    96   339    96     1
-#> 5    22    54   274    89   274   145     1
-#> 6     5    78   273    20   273    20     1
+#> 1    25    19   122    87   114    87     1
+#> 2    21    24   122    73   121    73     1
+#> 3     5    58   382    42   178   112     1
+#> 4    21    24   122    73   121    73     1
+#> 5    10    70   334    34   334    34     1
+#> 6     4    96   236    14   189    14     1
 ```
 
 Preparing data for benchmarking (i.e. add a spatial partitioning
@@ -128,10 +129,10 @@ best_results
 #> # Groups:   learner.id [4]
 #>   learner.id            iter   auc
 #>   <fct>                <int> <dbl>
-#> 1 classif.randomForest     3 0.849
-#> 2 classif.logreg           3 0.569
-#> 3 classif.rpart            3 0.712
-#> 4 classif.ksvm             1 0.883
+#> 1 classif.randomForest     1 0.992
+#> 2 classif.logreg           2 0.915
+#> 3 classif.rpart            3 0.900
+#> 4 classif.ksvm             4 0.963
 ```
 
 Plot best model results:
@@ -151,6 +152,21 @@ plot_sdm_map(raster_data = benchmarking_data$raster_data,
 ![](README-unnamed-chunk-6-1.png)
 
     #> integer(0)
+
+Using custom data
+-----------------
+
+If you are interested in bringing your own data, rather than using GBIF,
+you can toggle the checkmark in the sidebar and upload it. The required
+format is as follows:
+
+| bio1 | bio2 | bio3 | bio4 | bio \[…\] | bio 19 | label |
+|------|------|------|------|-----------|--------|-------|
+|      |      |      |      |           |        |       |
+|      |      |      |      |           |        |       |
+
+where `label` is `0/1`. At the monent custom data is supported only for
+`General Models`, and has no mapping capability.
 
 A good starting point to discover the full package functionality is to
 start the GUI with `run_sdmbench()`. Here are some screenshots:

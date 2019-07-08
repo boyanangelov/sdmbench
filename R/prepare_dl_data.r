@@ -55,9 +55,9 @@ prepare_dl_data <- function(input_data, partitioning_type) {
         recipes::prep(data = train_tbl)
 
     # use recipe
-    x_train_tbl <- recipes::bake(rec_obj, newdata = train_tbl) %>%
+    x_train_tbl <- recipes::bake(rec_obj, new_data = train_tbl) %>%
         dplyr::select(-label)
-    x_test_tbl <- recipes::bake(rec_obj, newdata = test_tbl) %>%
+    x_test_tbl <- recipes::bake(rec_obj, new_data = test_tbl) %>%
         dplyr::select(-label)
 
     y_train_vec <- train_tbl$label

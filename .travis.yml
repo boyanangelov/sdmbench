@@ -23,7 +23,6 @@ r_binary_packages:
   - shinyjs
   - tidyr
   - xgboost
-cache: packages
 addons:
   apt:
     packages:

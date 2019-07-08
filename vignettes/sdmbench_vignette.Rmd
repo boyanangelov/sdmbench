@@ -291,7 +291,7 @@ plot(keras_results$history, main = "DL Training History")
 
 In order to compare with the other regular models and MaxEnt we need the AUC:
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 get_dl_auc(keras_evaluation)
 ```
 

@@ -52,7 +52,7 @@ benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default",
             task <- mlr::makeClassifTask(data = benchmarking_data, target = "label")
         }
 
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE)
+        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, models = TRUE)
         return(bmr)
 
     } else if (dataset_type == "checkerboard1" | dataset_type == "checkerboard2") {
@@ -68,7 +68,7 @@ benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default",
 
             task <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
         }
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc)
+        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc, models = TRUE)
         return(bmr)
     } else if (dataset_type == "block") {
         rdesc <- mlr::makeResampleDesc("CV", iters = 4)
@@ -82,7 +82,7 @@ benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default",
             task <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
         }
 
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc)
+        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc, models = TRUE)
         return(bmr)
     }
 }

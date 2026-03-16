@@ -14,10 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-[![Build Status](https://travis-ci.org/boyanangelov/sdmbench.svg?branch=master)](https://travis-ci.org/boyanangelov/sdmbench)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1436376.svg)](https://doi.org/10.5281/zenodo.1436376)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.00847/status.svg)](https://doi.org/10.21105/joss.00847)
-
 
 # sdmbench
 
@@ -25,13 +23,13 @@ knitr::opts_chunk$set(
 
 Species Distribution Modeling (SDM) is a field of increasing importance in ecology<sup>[1](#footnote1)</sup>. Several popular applications of SDMs are understanding climate change effects on species<sup>[2](#footnote2)</sup>, natural reserve planning<sup>[3](#footnote3)</sup> and invasive species monitoring<sup>[4](#footnote4)</sup>. The `sdmbench` package solves several issues related to the development and evaluation of those models by providing a consistent benchmarking workflow:
 
-* consistent species occurence data acquisition and preprocessing
+* consistent species occurrence data acquisition and preprocessing
 * consistent environmental data acquisition and preprocessing (both current data and future projections)
 * consistent spatial data partitioning
 * integration of a wide variety of machine learning models
 * graphical user interface for non/semi-technical users
 
-The end result of a `sdmbench` SDM analysis is to determine the model - data processing combination that results in the highest predictive power for the species of interest. Such an analysis is useful to researchers who want to avoid issues of model selection and evaluation, and want to rapidly test prototypes of species distribution models.
+The end result of a `sdmbench` SDM analysis is to determine the model–data processing combination that results in the highest predictive power for the species of interest. Such an analysis is useful to researchers who want to avoid issues of model selection and evaluation, and want to rapidly test prototypes of species distribution models.
 
 ## Installation
 
@@ -40,18 +38,20 @@ The end result of a `sdmbench` SDM analysis is to determine the model - data pro
 devtools::install_github("boyanangelov/sdmbench")
 ```
 
-There are several additional packages you need to install if you want to access the complete sdmbench functionality. First Tensorflow. You can use the `keras` package to install that (it is installed by the previous command). Note that this step requires a working Python installation on your system. Most modern operating systems have Python pre-installed, but if you are not sure you can check the [official website](https://www.python.org/).
+The package has two optional dependencies for full functionality:
+
+**Deep learning (Keras/TensorFlow).** Requires a working Python installation.
 
 ```{r eval=FALSE}
-# consult the keras documentation if you want GPU support
-keras::install_keras(tensorflow = "default")
+# consult the keras documentation for GPU support
+keras::install_keras()
 ```
 
-Additionally you will need MaxEnt. Installation instructions are available [here](https://www.rdocumentation.org/packages/dismo/versions/1.1-4/topics/maxent). Note that this requires Java which you can get get from [here](http://www.oracle.com/technetwork/java/javase/downloads/index.html).
+**MaxEnt.** Requires Java and `maxent.jar` placed in the dismo Java directory. See `?dismo::maxent` for installation instructions.
 
 ## Examples
 
-Here are several examples of what you can do with `sdmbench`. Downloading and prepare benchmarking data:
+Download and prepare benchmarking data:
 
 ```{r example}
 library(sdmbench)
@@ -60,79 +60,88 @@ benchmarking_data <- get_benchmarking_data("Loxodonta africana", limit = 1200, c
 head(benchmarking_data$df_data)
 ```
 
-
-Preparing data for benchmarking (i.e. add a spatial partitioning method):
+Apply spatial partitioning and set up learners:
 
 ```{r}
-data("wrld_simpl", package = "maptools")
-benchmarking_data$df_data <- partition_data(dataset_raster = benchmarking_data$raster_data,
-                                            dataset = benchmarking_data$df_data,
-                                            env = benchmarking_data$raster_data$climate_variables,
-                                            method = "block")
+benchmarking_data$df_data <- partition_data(
+    dataset_raster = benchmarking_data$raster_data,
+    dataset        = benchmarking_data$df_data,
+    env            = benchmarking_data$raster_data$climate_variables,
+    method         = "block"
+)
 
-learners <- list(mlr::makeLearner("classif.randomForest", predict.type = "prob"),
-                 mlr::makeLearner("classif.logreg", predict.type = "prob"),
-                 mlr::makeLearner("classif.rpart", predict.type = "prob"),
-                 mlr::makeLearner("classif.ksvm", predict.type = "prob"))
+learners <- list(
+    mlr3::lrn("classif.ranger",  predict_type = "prob"),
+    mlr3::lrn("classif.log_reg", predict_type = "prob"),
+    mlr3::lrn("classif.rpart",   predict_type = "prob"),
+    mlr3::lrn("classif.svm",     predict_type = "prob")
+)
+
 benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
 ```
 
-Benchmarking machine learning models on parsed species occurence data:
+Benchmark models and retrieve results:
 
 ```{r message=FALSE, warning=FALSE}
-bmr <- benchmark_sdm(benchmarking_data$df_data, 
-                     learners = learners, 
-                     dataset_type = "block", 
-                     sample = FALSE)
+bmr <- benchmark_sdm(benchmarking_data$df_data,
+                     learners     = learners,
+                     dataset_type = "block",
+                     sample       = FALSE)
+
 best_results <- get_best_model_results(bmr)
 best_results
 ```
 
-Plot best model results:
+Plot the best model's predicted habitat suitability:
 
 ```{r}
-bmr_models <- mlr::getBMRModels(bmr)
 plot_sdm_map(raster_data = benchmarking_data$raster_data,
-            bmr_models = bmr_models,
-            model_id = best_results$learner.id[1],
-            model_iteration = best_results$iter[1],
-             map_type = "static") +
-            raster::plot(wrld_simpl, 
-                         add = TRUE, 
-                         border = "darkgrey")
+             bmr         = bmr,
+             learner_id  = best_results$learner_id[1],
+             iteration   = best_results$iteration[1],
+             map_type    = "static")
 ```
 
 ## Using custom data
 
-If you are interested in bringing your own data (rather than using GBIF) you can toggle the checkmark in the sidebar and upload it. The required format is as follows:
+If you prefer to bring your own occurrence data rather than downloading from GBIF, you can upload a CSV via the Shiny GUI sidebar. The file must have the following columns:
 
-|  bio1 	|  bio2 	| bio3  	|  bio4 	|  bio [...] 	|  bio 19 	|  label 	|
-|---	|---	|---	|---	|---	|---	|---	|
-|   	|   	|   	|   	|   	|   	|   	|
-|   	|   	|   	|   	|   	|   	|   	|
+| species   | decimalLongitude | decimalLatitude |
+|-----------|-----------------|----------------|
+| Lynx lynx | 24.3            | 51.2           |
+| …         | …               | …              |
 
-where `label` is `0/1`. At the moment custom data is supported only for `General Models`, and has no mapping capability.
+where `species` is the scientific name. Custom data is currently supported only for **General Models** and does not include mapping functionality.
 
-A good starting point to discover the full package functionality is to start the GUI with `run_sdmbench()`. Here are some screenshots:
+A good starting point to explore the full package is to launch the GUI:
+
+```{r eval=FALSE}
+run_sdmbench()
+```
+
+Screenshots:
 
 ![](vignettes/gui_screenshots/screenshot_1.png)
-<br>
-<br>
+<br><br>
 ![](vignettes/gui_screenshots/screenshot_2.png)
-
 
 ## Vignette
 
 A thorough introduction to the package is available as a vignette in the package, and [online](https://boyanangelov.com/materials/sdmbench_vignette.html).
 
 ```r
-# open vignette
 vignette("sdmbench")
 ```
 
 ## Tests
 
-The package tests are in the `tests` directory, and can be run by using `devtools::test` or Ctrl/Cmd + Shift + T within RStudio.
+Tests are in the `tests/` directory and can be run with:
+
+```r
+devtools::test()
+```
+
+or Ctrl/Cmd + Shift + T in RStudio. Note that tests download live data from GBIF and require an internet connection.
 
 ## Contributors
 
@@ -143,10 +152,11 @@ Contributions are welcome and guidelines are stated in `CONTRIBUTING.md`.
 MIT (`LICENSE.md`)
 
 ## References
-<a name="footnote1">1</a>. Elith, J. & Leathwick, J. R. Species Distribution Models: Ecological Explanation and Prediction Across Space and Time. Annu. Rev. Ecol. Evol. Syst. 40, 677–697 (2009).
 
-<a name="footnote2">2</a>. Austin, M. P. & Van Niel, K. P. Improving species distribution models for climate change studies: Variable selection and scale. J. Biogeogr. 38, 1–8 (2011).
+<a name="footnote1">1</a>. Elith, J. & Leathwick, J. R. Species Distribution Models: Ecological Explanation and Prediction Across Space and Time. *Annu. Rev. Ecol. Evol. Syst.* 40, 677–697 (2009).
 
-<a name="footnote3">3</a>. Guisan, A. et al. Predicting species distributions for conservation decisions. Ecol. Lett. 16, 1424–1435 (2013).
+<a name="footnote2">2</a>. Austin, M. P. & Van Niel, K. P. Improving species distribution models for climate change studies: Variable selection and scale. *J. Biogeogr.* 38, 1–8 (2011).
 
-<a name="footnote4">4</a>. Descombes, P. et al. Monitoring and distribution modelling of invasive species along riverine habitats at very high resolution. Biol. Invasions 18, 3665–3679 (2016).
+<a name="footnote3">3</a>. Guisan, A. et al. Predicting species distributions for conservation decisions. *Ecol. Lett.* 16, 1424–1435 (2013).
+
+<a name="footnote4">4</a>. Descombes, P. et al. Monitoring and distribution modelling of invasive species along riverine habitats at very high resolution. *Biol. Invasions* 18, 3665–3679 (2016).

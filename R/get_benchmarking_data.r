@@ -35,11 +35,18 @@ get_benchmarking_data <- function(scientific_name,
                                   year = 50,
                                   shp = NULL) {
     message("Downloading occurrence data from GBIF...")
-    species_occ <- rgbif::occ_data(
-        scientificName     = scientific_name,
-        limit              = limit,
-        hasGeospatialIssue = FALSE,
-        country            = country
+    species_occ <- tryCatch(
+        rgbif::occ_data(
+            scientificName     = scientific_name,
+            limit              = limit,
+            hasGeospatialIssue = FALSE,
+            country            = country
+        ),
+        error = function(e) {
+            stop("Failed to download occurrence data from GBIF: ", conditionMessage(e),
+                 "\nGBIF may be temporarily unavailable. Please try again later.",
+                 call. = FALSE)
+        }
     )
 
     species_occ_data <- species_occ$data |>

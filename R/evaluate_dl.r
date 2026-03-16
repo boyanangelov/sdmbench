@@ -1,56 +1,23 @@
 #' Evaluate deep learning model performance
 #'
-#' A function to evaluate a deep learning model.
-#' @param model_keras Keras deep learning model.
-#' @param input_data A dataframe containing occurrence data parsed for deep learning using the \code{\link{prepare_dl_data}} function.
+#' Runs the trained Keras model on the held-out test set and returns a tibble
+#' suitable for metric calculation with \pkg{yardstick} (e.g. \code{\link{get_dl_auc}}).
 #'
-#' @return A tibble containing the model estimates.
-#' @examples
-#' \dontrun{
-#' # download benchmarking data
-#' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500)
+#' @param model_keras A trained Keras model — the \code{$model} element of the list
+#'   returned by \code{\link{train_dl}} (i.e. \code{train_dl(...)$model}).
+#' @param input_data A list returned by \code{\link{prepare_dl_data}}, containing
+#'   \code{test_tbl} (scaled predictor matrix) and \code{y_test_vec} (integer labels).
 #'
-#' # transform benchmarking data into a format suitable for deep learning
-#' # if you have previously used a partitioning method you should specify it here
-#' benchmarking_data_dl <- prepare_dl_data(input_data = benchmarking_data$df_data,
-#'                                        partitioning_type = "default")
-#'
-#' # perform sanity checks on the transformed data
-#' # for the training set
-#' head(benchmarking_data_dl$train_tbl)
-#' table(benchmarking_data_dl$y_train_vec)
-#'
-#' # for the test set
-#' head(benchmarking_data_dl$test_tbl)
-#' table(benchmarking_data_dl$y_test_vec)
-#'
-#' # train neural network
-#' keras_results <- train_dl(benchmarking_data_dl)
-#'
-#' # inspect training results
-#' keras_results$history
-#'
-#' # you can also plot them
-#' plot(keras_results$history)
-#'
-#' # create evaluation tibble containing training results
-#' keras_evaluation <- evaluate_dl(keras_results$model, benchmarking_data_dl)
-#' head(keras_evaluation)
-#' }
+#' @return A tibble with columns \code{truth} (factor), \code{estimate} (factor), and
+#'   \code{class_prob} (numeric predicted probability).
 #' @export
 evaluate_dl <- function(model_keras, input_data) {
-    yhat_keras_class_vec <- keras::predict_classes(object = model_keras,
-                                                   x = as.matrix(input_data$test_tbl)) %>%
-        as.vector()
+    yhat_prob_vec  <- as.vector(predict(model_keras, as.matrix(input_data$test_tbl)))
+    yhat_class_vec <- as.integer(yhat_prob_vec > 0.5)
 
-    yhat_keras_prob_vec <- keras::predict_proba(object = model_keras,
-                                                x = as.matrix(input_data$test_tbl)) %>%
-        as.vector()
-
-    estimates_keras_tbl <- tibble::tibble(truth = as.factor(input_data$y_test_vec),
-                                          estimate = as.factor(yhat_keras_class_vec),
-        class_prob = yhat_keras_prob_vec)
-
-    return(estimates_keras_tbl)
+    tibble::tibble(
+        truth      = as.factor(input_data$y_test_vec),
+        estimate   = as.factor(yhat_class_vec),
+        class_prob = yhat_prob_vec
+    )
 }

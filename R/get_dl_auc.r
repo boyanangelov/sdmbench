@@ -1,10 +1,14 @@
-#' Extract AUC from keras evaluation
+#' Compute precision-recall AUC for a deep learning model
+#'
+#' Computes the area under the precision-recall curve (PR-AUC) using
+#' \code{\link[yardstick]{pr_auc}}. Note that this is PR-AUC, not ROC-AUC.
 #'
 #' @importFrom magrittr %>%
 #'
-#' @param keras_evaluation A table containing the keras evaluation.
+#' @param keras_evaluation A tibble returned by \code{\link{evaluate_dl}}, with columns
+#'   \code{truth} (factor), \code{estimate} (factor), and \code{class_prob} (numeric).
 #'
-#' @return A numeric value indicating the AUC of the tested keras model.
+#' @return A numeric scalar: the PR-AUC of the model, rounded to three decimal places.
 #' @examples
 #' \dontrun{
 #' # download benchmarking data

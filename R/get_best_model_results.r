@@ -1,39 +1,26 @@
-#' Extract best model performances
+#' Extract best per-fold AUC for each learner
 #'
-#' @param bmr A bmr object, result of the \code{\link{benchmark_sdm}} function.
+#' For each learner in a benchmark result, returns the single CV fold that achieved
+#' the highest ROC-AUC. Useful for a quick ranking, but note this is the best fold,
+#' not the mean across folds. For mean AUC use
+#' \code{bmr$aggregate(mlr3::msr("classif.auc"))} directly.
 #'
-#' @return A dataframe containing the best model results (learner name, optimal iteration number and associated AUC).
+#' @param bmr A \code{BenchmarkResult} object returned by \code{\link{benchmark_sdm}}.
+#'
+#' @return A data frame with columns \code{learner_id}, \code{iteration} (fold index),
+#'   and \code{classif.auc} (best ROC-AUC for that learner).
 #' @examples
 #' \dontrun{
-#' # download benchmarking data
-#' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500)
-#'
-#' # create a list of algorithms to compare
-#' learners <- list(mlr::makeLearner("classif.randomForest",
-#'                                   predict.type = "prob"),
-#'                  mlr::makeLearner("classif.logreg",
-#'                                   predict.type = "prob"))
-#'
-#' # run the model benchmarking process
 #' bmr <- benchmark_sdm(benchmarking_data$df_data,
-#'                      learners = learners,
-#'                      dataset_type = "default",
-#'                      sample = FALSE)
-#'
-#' # get best model results
-#' # you should obtain a dataframe containing the highest performing (by AUC)
-#' # algorithm name, iteration and associated AUC
-#' best_results <- get_best_model_results(bmr)
-#' best_results
+#'                      learners = list(mlr3::lrn("classif.ranger", predict_type = "prob")))
+#' get_best_model_results(bmr)
 #' }
 #' @export
 get_best_model_results <- function(bmr) {
-    perf <- mlr::getBMRPerformances(bmr, as.df = TRUE)
-    best_results <- perf %>%
-        dplyr::group_by(learner.id) %>%
-        dplyr::top_n(n = 1)
-    best_results$task.id <- NULL
-
-    return(best_results)
+    perf <- as.data.frame(bmr$score(mlr3::msr("classif.auc")))
+    perf |>
+        dplyr::group_by(learner_id) |>
+        dplyr::slice_max(order_by = classif.auc, n = 1, with_ties = FALSE) |>
+        dplyr::ungroup() |>
+        dplyr::select(learner_id, iteration, classif.auc)
 }

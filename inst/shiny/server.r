@@ -1,321 +1,213 @@
 library(magrittr)
+
 server <- function(input, output) {
     shinyjs::disable("go_bmr")
     shinyjs::disable("go_maxent")
     shinyjs::disable("go_profile")
     shinyjs::disable("go_dl")
-    
-    data("wrld_simpl", package = "maptools")
-    
-    v <-
-        reactiveValues(data = NULL,
-                       bmr = NULL,
-                       partitioning_type = NULL)
-    
+
+    v <- reactiveValues(data = NULL, bmr = NULL, partitioning_type = NULL)
+
+    # -- Custom data upload ---------------------------------------------------
     observeEvent(input$go_custom, {
-        if (input$custom_data == TRUE) {
+        if (isTRUE(input$custom_data)) {
             tryCatch({
                 df <- read.csv(input$file1$datapath)
-            },
-            
-            error = function(e) {
-                # catch parsing error
-                stop(safeError(e))
+                v$data             <- list(df_data = df)
+                v$partitioning_type <- input$data_partitioning_type
+                shinyjs::enable("go_bmr")
+                showNotification("Custom data loaded successfully.")
+            }, error = function(e) {
+                showNotification(paste("Error parsing file:", conditionMessage(e)),
+                                 type = "error")
             })
-            data <- list(NULL, df_data = df)
-            v$data <- data
-            v$partitioning_type <- input$data_partitioning_type
-            
-            shinyjs::enable("go_bmr")
-            showNotification("Custom data parsed")
         } else {
-            showNotification("Data format error")
+            showNotification("Enable 'Use custom data?' first.", type = "warning")
         }
     })
-    
+
+    # -- GBIF data download --------------------------------------------------
     observeEvent(input$go, {
         req(input$text)
-        
+
         progress <- shiny::Progress$new()
-        
+        on.exit(progress$close())
         progress$set(message = "Status", value = 0)
-        progress$inc(1 / 4,
-                     detail = "Downloading species occurence data and climate
-            variables...")
-        
+        progress$inc(0.25, detail = "Downloading occurrence and climate data...")
+
         benchmarking_data <- sdmbench::get_benchmarking_data(
-            scientific_name = input$text,
-            limit = input$limit,
-            climate_type = input$climate_type,
+            scientific_name    = input$text,
+            limit              = input$limit,
+            climate_type       = input$climate_type,
             climate_resolution = input$climate_resolution,
-            projected_model = input$projected_model,
-            rcp = input$rcp,
-            year = input$years
+            projected_model    = input$projected_model,
+            rcp                = input$rcp,
+            year               = input$years
         )
-        
-        progress$inc(1 / 4, detail = "Processing data...")
-        
+
+        progress$inc(0.25, detail = "Partitioning data...")
         benchmarking_data$df_data <- sdmbench::partition_data(
             dataset_raster = benchmarking_data$raster_data,
-            dataset = benchmarking_data$df_data,
-            env = benchmarking_data$raster_data$climate_variables,
-            method = input$data_partitioning_type
+            dataset        = benchmarking_data$df_data,
+            env            = benchmarking_data$raster_data$climate_variables,
+            method         = input$data_partitioning_type
         )
-        
-        progress$inc(1 / 4, detail = "Plotting map...")
-        
-        output$table <-
-            renderTable(head(benchmarking_data$df_data))
-        output$species_name <- renderText(input$text)
-        
-        output$occ_map <- leaflet::renderLeaflet({
-            leaflet::leaflet(data = benchmarking_data$raster_data$coords_presence) %>%
-                leaflet::addTiles() %>%
-                leaflet::addCircleMarkers( ~ x, ~ y, fillOpacity = 0.3)
+
+        progress$inc(0.25, detail = "Rendering occurrence map...")
+        output$table       <- renderTable(head(benchmarking_data$df_data))
+        output$occ_map     <- leaflet::renderLeaflet({
+            leaflet::leaflet(data = benchmarking_data$raster_data$coords_presence) |>
+                leaflet::addTiles() |>
+                leaflet::addCircleMarkers(~x, ~y, fillOpacity = 0.3)
         })
-        
-        progress$inc(1 / 4, detail = "Finished")
-        progress$close()
-        
-        v$data <- benchmarking_data
+
+        progress$inc(0.25, detail = "Done.")
+        v$data              <- benchmarking_data
         v$partitioning_type <- input$data_partitioning_type
-        
+
         shinyjs::enable("go_bmr")
         shinyjs::enable("go_maxent")
         shinyjs::enable("go_profile")
         shinyjs::enable("go_dl")
-        
     })
-    
+
+    # -- General ML benchmarking ---------------------------------------------
     observeEvent(input$go_bmr, {
         benchmarking_data <- v$data
         partitioning_type <- v$partitioning_type
-        
+
         progress_bmr <- shiny::Progress$new()
+        on.exit(progress_bmr$close())
         progress_bmr$set(message = "Status", value = 0)
-        progress_bmr$inc(1 / 3, detail = "Benchmarking...")
-        
-        learners_list <- input$checkGroup
-        learners <- list()
-        for (i in seq_along(learners_list)) {
-            learners[[i]] <- mlr::makeLearner(learners_list[[i]],
-                                              predict.type = "prob")
-        }
-        
-        benchmarking_data$df_data <-
-            na.omit(benchmarking_data$df_data)
-        bmr <-
-            sdmbench::benchmark_sdm(
-                benchmarking_data = benchmarking_data$df_data,
-                learners = learners,
-                dataset_type =  partitioning_type,
-                sample = input$sample
-            )
-        
-        progress_bmr$inc(1 / 3, detail = "Plotting benchmark results...")
-        output$bmr_plot1 <-
-            renderPlot(plotBMRBoxplots(bmr, measure = mlr::auc))
-        output$bmr_results <-
-            renderTable(sdmbench::get_best_model_results(bmr))
-        
-        bmr_models <- mlr::getBMRModels(bmr)
+        progress_bmr$inc(0.33, detail = "Benchmarking models...")
+
+        learners <- lapply(input$checkGroup, function(lid) {
+            mlr3::lrn(lid, predict_type = "prob")
+        })
+
+        benchmarking_data$df_data <- na.omit(benchmarking_data$df_data)
+        bmr <- sdmbench::benchmark_sdm(
+            benchmarking_data = benchmarking_data$df_data,
+            learners          = learners,
+            dataset_type      = partitioning_type,
+            sample            = input$sample
+        )
+        v$bmr <- bmr
+
+        progress_bmr$inc(0.33, detail = "Rendering results...")
         best_results <- sdmbench::get_best_model_results(bmr)
-        
-        output$model_map_1 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[1],
-                model_iteration = best_results$iter[1],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_2 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[2],
-                model_iteration = best_results$iter[2],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_3 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[3],
-                model_iteration = best_results$iter[3],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_4 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[4],
-                model_iteration = best_results$iter[4],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_5 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[5],
-                model_iteration = best_results$iter[5],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_6 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[6],
-                model_iteration = best_results$iter[6],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_7 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[7],
-                model_iteration = best_results$iter[7],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_8 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[8],
-                model_iteration = best_results$iter[8],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_9 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[9],
-                model_iteration = best_results$iter[9],
-                map_type = "interactive"
-            )
-        )
-        
-        output$model_map_10 <- leaflet::renderLeaflet(
-            sdmbench::plot_sdm_map(
-                raster_data = benchmarking_data$raster_data,
-                bmr_models = bmr_models,
-                model_id = best_results$learner.id[10],
-                model_iteration = best_results$iter[10],
-                map_type = "interactive"
-            )
-        )
-        
-        progress_bmr$inc(1 / 3, detail = "Done!")
-        progress_bmr$close()
-        
-    })
-    
-    observeEvent(input$go_maxent, {
-        if (v$partitioning_type %in%
-            c("block", "checkerboard1", "checkerboard2")) {
-            data("wrld_simpl", package = "maptools")
-            progress_meeval <- shiny::Progress$new()
-            progress_meeval$set(message = "Status", value = 0)
-            progress_meeval$inc(1 / 3, detail = "Evaluating MaxEnt...")
-            
-            maxent_results <-
-                sdmbench::evaluate_maxent(
-                    raster_data = v$data$raster_data,
-                    method = v$partitioning_type
-                )
-            
-            progress_meeval$inc(1 / 3, detail = "Plotting MaxEnt map")
-            
-            output$maxent_auc <- renderText(maxent_results$best_auc)
-            
-            pal <- leaflet::colorNumeric(
-                c("#ffdbe2", "#fff56b", "#58ff32"),
-                raster::values(maxent_results$best_model_pr),
-                na.color = "transparent"
-            )
-            
-            output$maxent_map <- leaflet::renderLeaflet(
-                leaflet::leaflet(data = v$data$raster_data$coords_presence) %>%
-                    leaflet::addTiles() %>%
-                    leaflet::addRasterImage(
-                        maxent_results$best_model_pr,
-                        colors = pal,
-                        opacity = 0.5
-                    ) %>%
-                    leaflet::addLegend(
-                        title = "Habitat Suitability",
-                        pal = pal,
-                        values = raster::values(maxent_results$best_model_pr),
-                        opacity = 1
+
+        output$bmr_results <- renderTable(best_results)
+        output$bmr_plot1   <- renderPlot({
+            perf <- as.data.frame(bmr$score(mlr3::msr("classif.auc")))
+            ggplot2::ggplot(perf, ggplot2::aes(x = learner_id, y = classif.auc)) +
+                ggplot2::geom_boxplot(fill = "#4CAF50", alpha = 0.7) +
+                ggplot2::theme_minimal(base_size = 13) +
+                ggplot2::labs(x = "Algorithm", y = "AUC") +
+                ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 35, hjust = 1))
+        })
+
+        # Render up to 8 maps (one per learner result row)
+        map_ids <- seq_len(min(nrow(best_results), 8L))
+        for (i in map_ids) {
+            local({
+                idx    <- i
+                map_id <- paste0("model_map_", idx)
+                output[[map_id]] <- leaflet::renderLeaflet(
+                    sdmbench::plot_sdm_map(
+                        raster_data = benchmarking_data$raster_data,
+                        bmr         = bmr,
+                        learner_id  = best_results$learner_id[[idx]],
+                        iteration   = best_results$iteration[[idx]],
+                        map_type    = "interactive"
                     )
-                
-            )
-            
-            progress_meeval$inc(1 / 3, detail = "Finished")
-            progress_meeval$close()
-            
-        } else {
-            output$maxent_auc <- renderText("Select a partitioning method
-                                            (current is default).")
+                )
+            })
         }
+
+        progress_bmr$inc(0.34, detail = "Done!")
     })
-    
-    
+
+    # -- MaxEnt --------------------------------------------------------------
+    observeEvent(input$go_maxent, {
+        if (!v$partitioning_type %in% c("block", "checkerboard1", "checkerboard2")) {
+            output$maxent_auc <- renderText(
+                "Please select a spatial partitioning method (block or checkerboard)."
+            )
+            return()
+        }
+
+        progress_me <- shiny::Progress$new()
+        on.exit(progress_me$close())
+        progress_me$set(message = "Status", value = 0)
+        progress_me$inc(0.5, detail = "Evaluating MaxEnt...")
+
+        maxent_results <- sdmbench::evaluate_maxent(
+            raster_data = v$data$raster_data,
+            method      = v$partitioning_type
+        )
+
+        progress_me$inc(0.3, detail = "Rendering MaxEnt map...")
+        output$maxent_auc <- renderText(round(maxent_results$best_auc, 4))
+
+        pal <- leaflet::colorNumeric(
+            c("#ffdbe2", "#fff56b", "#58ff32"),
+            terra::values(maxent_results$best_model_pr),
+            na.color = "transparent"
+        )
+        output$maxent_map <- leaflet::renderLeaflet(
+            leaflet::leaflet(data = v$data$raster_data$coords_presence) |>
+                leaflet::addTiles() |>
+                leaflet::addRasterImage(
+                    raster::raster(maxent_results$best_model_pr),
+                    colors  = pal,
+                    opacity = 0.5
+                ) |>
+                leaflet::addLegend(
+                    title   = "Habitat Suitability",
+                    pal     = pal,
+                    values  = terra::values(maxent_results$best_model_pr),
+                    opacity = 1
+                )
+        )
+        progress_me$inc(0.2, detail = "Done.")
+    })
+
+    # -- Deep Learning -------------------------------------------------------
     observeEvent(input$go_dl, {
         progress_dl <- shiny::Progress$new()
+        on.exit(progress_dl$close())
         progress_dl$set(message = "Status", value = 0)
-        progress_dl$inc(1 / 3, detail = "Preparing training data...")
-        
-        df_data <- v$data$df_data
-        
-        benchmarking_data_dl <- sdmbench::prepare_dl_data(input_data = df_data,
-                                                          partitioning_type = v$partitioning_type)
-        progress_dl$inc(1 / 3, detail = "Training network...")
-        keras_results <- sdmbench::train_dl(benchmarking_data_dl)
-        keras_evaluation <-
-            sdmbench::evaluate_dl(model_keras = keras_results$model,
-                                  input_data = benchmarking_data_dl)
-        
-        temp_fun <- function(model, input_data) {
+        progress_dl$inc(0.33, detail = "Preparing training data...")
+
+        benchmarking_data_dl <- sdmbench::prepare_dl_data(
+            input_data       = v$data$df_data,
+            partitioning_type = v$partitioning_type
+        )
+
+        progress_dl$inc(0.33, detail = "Training neural network...")
+        keras_results    <- sdmbench::train_dl(benchmarking_data_dl)
+        keras_evaluation <- sdmbench::evaluate_dl(keras_results$model, benchmarking_data_dl)
+
+        # Predict function that applies recipe + keras model to raster data
+        rec_obj <- benchmarking_data_dl$rec_obj
+        dl_predict_fun <- function(model, input_data) {
             input_data <- tibble::as_tibble(input_data)
-            data <- recipes::bake(benchmarking_data_dl$rec_obj,
-                                  new_data = input_data)
-            
-            v <-
-                keras::predict_proba(object = model, x = as.matrix(data))
-            as.vector(v)
+            baked      <- recipes::bake(rec_obj, new_data = input_data)
+            as.vector(predict(model, as.matrix(baked)))
         }
-        
-        output$dl_auc <- renderText(paste("AUC: ",
-                                          sdmbench::get_dl_auc(keras_evaluation)))
-        output$dl_map <- leaflet::renderLeaflet(
+
+        output$dl_auc     <- renderText(paste("AUC:", sdmbench::get_dl_auc(keras_evaluation)))
+        output$dl_history <- renderPlot(plot(keras_results$history))
+        output$dl_map     <- leaflet::renderLeaflet(
             sdmbench::plot_dl_map(
                 raster_data = v$data$raster_data,
                 keras_model = keras_results$model,
-                custom_fun = temp_fun,
-                map_type = "interactive"
+                custom_fun  = dl_predict_fun,
+                map_type    = "interactive"
             )
         )
-        output$dl_history <- renderPlot(plot(keras_results$history))
-        
-        progress_dl$inc(1 / 3, detail = "Finished!")
-        progress_dl$close()
+
+        progress_dl$inc(0.34, detail = "Done!")
     })
-    
 }

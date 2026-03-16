@@ -1,46 +1,47 @@
 Package: sdmbench
 Type: Package
 Title: Benchmark Species Distribution Models
-Version: 0.1.3
-Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com",
-  role = c("aut", "cre"))
+Version: 0.2.0
+Authors@R: person("Angelov", "Boyan", email = "boyan.angelov@gmail.com", role = c("aut", "cre"))
 Maintainer: Boyan Angelov <boyan.angelov@gmail.com>
-Description: This package provides tools and functions to benchmark Species Distribution Models (SDMs).
-    In addition to domain specific tools, a GUI is provided as an easier interface.
+Description: Tools and functions to benchmark Species Distribution Models (SDMs)
+    using modern spatial and machine learning packages. Includes a GUI for
+    non-technical users.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.3.1
 Imports:
     CoordinateCleaner,
     dismo,
     dplyr,
     e1071,
-    ENMeval (>= 0.3.0),
-    gbm,
+    ENMeval (>= 2.0.0),
+    geodata,
+    ggplot2,
     keras,
     kernlab,
     leaflet,
     magrittr,
-    maptools,
-    mlr,
+    mlr3 (>= 0.14.0),
+    mlr3learners (>= 0.5.0),
     nnet,
-    randomForest,
     raster,
+    randomForest,
     recipes,
     rgbif,
-    rgdal,
     rpart,
     rsample,
-    scrubr,
     shiny,
     shinydashboard,
     shinyjs,
+    terra (>= 1.6.0),
     tidyr,
     xgboost,
-    yardstick,
-Suggests: testthat,
+    yardstick
+Suggests:
+    testthat,
     knitr,
     rmarkdown,
-    RWeka
+    mlr3extralearners
 VignetteBuilder: knitr

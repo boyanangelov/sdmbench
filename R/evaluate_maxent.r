@@ -1,34 +1,42 @@
 #' Evaluate MaxEnt model performance
 #'
-#' @param raster_data A raster dataset.
-#' @param method A character string indicating the spatial data partitioning method. Possible values are `jackknife`, `randomkfold`, `user`, `block`, `checkerboard1`, `checkerboard2`.
+#' Runs \code{\link[ENMeval]{ENMevaluate}} with the \code{maxent.jar} algorithm and selects
+#' the best model by mean validation AUC.
 #'
-#' @return A list containing AUC value and predict object (for plotting).
-#' @examples
-#' \dontrun{
-#' # download benchmarking data
-#' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500)
-#' # run MaxEnt evaluation
-#' maxent_results <- evaluate_maxent(raster_data = benchmarking_data$raster_data,
-#'                                   method = "block")
+#' Tuning is fixed to linear feature class only (\code{fc = "L"}) and regularisation
+#' multipliers \code{rm = c(1, 2)}. The best model is chosen as the one with the
+#' highest mean validation AUC across partitions.
 #'
-#' # get AUC of best model run
-#' maxent_results$best_auc
-#' }
+#' Requires \code{maxent.jar} to be present in the \pkg{dismo} Java directory
+#' (typically \code{system.file("java", package = "dismo")}). See \code{?dismo::maxent}
+#' for installation instructions.
+#'
+#' @param raster_data The \code{raster_data} list element from \code{\link{get_benchmarking_data}}.
+#' @param method A character string: the spatial partitioning method passed to
+#'   \code{ENMeval::ENMevaluate}. One of \code{"jackknife"}, \code{"randomkfold"},
+#'   \code{"user"}, \code{"block"}, \code{"checkerboard1"}, \code{"checkerboard2"}.
+#'
+#' @return A list with \code{best_auc} (numeric) and \code{best_model_pr} (SpatRaster of
+#'   predicted habitat suitability).
 #' @export
 evaluate_maxent <- function(raster_data, method) {
-    eval <- ENMeval::ENMevaluate(occ = raster_data$coords_presence,
-                                 env = raster_data$climate_variables,
-                                 bg.coords = raster_data$background,
-                                 method = method,
-                                 RMvalues = c(1, 2),
-                                 fc = c("L"))
+    eval <- ENMeval::ENMevaluate(
+        occs       = raster_data$coords_presence,
+        envs       = raster_data$climate_variables,
+        bg         = raster_data$background,
+        algorithm  = "maxent.jar",
+        partitions = method,
+        tune.args  = list(fc = c("L"), rm = c(1, 2))
+    )
 
-    best_model_id <- as.integer(row.names(eval@results[which.max(eval@results$avg.test.AUC), ]))
-    best_auc <- eval@results$avg.test.AUC[[best_model_id]]
-    best_model_pr <- dismo::predict(raster_data$climate_variables, eval@models[[best_model_id]])
-    me_results <- list(best_auc = best_auc, best_model_pr = best_model_pr)
+    # Column name for mean validation AUC changed in ENMeval 2.0
+    auc_col <- if ("auc.val.avg" %in% names(eval@results)) "auc.val.avg" else "avg.test.AUC"
+    best_idx <- which.max(eval@results[[auc_col]])
+    best_auc <- eval@results[[auc_col]][[best_idx]]
 
-    return(me_results)
+    # Predict over climate raster (convert to Raster* for dismo compatibility)
+    climate_raster <- raster::stack(raster_data$climate_variables)
+    best_model_pr  <- terra::rast(dismo::predict(climate_raster, eval@models[[best_idx]]))
+
+    list(best_auc = best_auc, best_model_pr = best_model_pr)
 }

@@ -1,88 +1,84 @@
-#' Benchmark regular models
+#' Benchmark species distribution models
 #'
-#' A function to benchmark a collection of regular machine learning models.
-#' @param benchmarking_data A dataframe from the output of \code{\link{get_benchmarking_data}} function. This dataset contains species occurrence coordinates together with a set of environmental data points.
-#' @param learners A list of mlr learner objects which specify which models to use (i.e. Random Forests). The following learners are supported: "classif.logreg", "classif.gbm", "classif.multinom", "classif.naiveBayes", "classif.xgboost", "classif.ksvm".
-#' @param dataset_type A character string indicating spatial partitioning method. This is used in order to avoid spatial autocorrelation issues.
-#' @param sample Logical. Indicates whether benchmarking should be done on an undersampled dataset. This is useful for testing model efficiency with an imbalanced dataset (i.e. few observations and many background (pseudo-absence) points).
+#' Runs cross-validated benchmarking of a collection of classification learners using the
+#' \pkg{mlr3} framework. Spatial blocking is applied automatically based on \code{dataset_type}.
 #'
-#' @return Benchmarking object (class bmr). This object can be accessed by other functions in order to obtain the benchmark results.
-#' @examples
-#' \dontrun{
-#' # download benchmarking data
-#' benchmarking_data <- get_benchmarking_data("Lynx lynx",
-#'                                            limit = 1500)
+#' @param benchmarking_data A data frame from \code{\link{get_benchmarking_data}} (optionally
+#'   post-processed by \code{\link{partition_data}}). Must contain a \code{label} column and
+#'   bioclimatic variable columns. For \code{"block"} type it also needs a \code{grp} column;
+#'   for checkerboard types a \code{grp_checkerboard} column.
+#' @param learners A list of \pkg{mlr3} learner objects created with \code{mlr3::lrn()}.
+#'   Supported examples (requires \pkg{mlr3learners}):
+#'   \code{"classif.ranger"}, \code{"classif.log_reg"}, \code{"classif.xgboost"},
+#'   \code{"classif.naive_bayes"}, \code{"classif.rpart"}, \code{"classif.svm"},
+#'   \code{"classif.multinom"}, \code{"classif.kknn"}.
+#'   All learners must have \code{predict_type = "prob"}.
+#' @param dataset_type A character string indicating the spatial partitioning method used:
+#'   \code{"default"} (5-fold CV), \code{"block"} (4-fold spatial CV), or
+#'   \code{"checkerboard1"} / \code{"checkerboard2"} (2-fold spatial CV).
+#' @param sample Logical. If \code{TRUE}, undersample the background class (keeps at most
+#'   8x the number of presence records) before benchmarking.
 #'
-#' # create a list of algorithms to compare
-#' # here it is important to specify predict.type as "prob"
-#' learners <- list(mlr::makeLearner("classif.randomForest",
-#'                                   predict.type = "prob"),
-#'                  mlr::makeLearner("classif.logreg",
-#'                                  predict.type = "prob"))
-#'
-#' # run the model benchmarking process
-#' # if you have previously used a partitioning method you should specify it here
-#' bmr <- benchmark_sdm(benchmarking_data$df_data,
-#'                     learners = learners,
-#'                     dataset_type = "default")
-#'
-#' # for benchmarking an imbalanced dataset you can undersample
-#' bmr <- benchmark_sdm(benchmarking_data$df_data,
-#'                     learners = learners,
-#'                     dataset_type = "default",
-#'                     sample = TRUE)
-#'
-#' # inspect the benchmark results
-#' bmr
-#' }
+#' @return A \code{BenchmarkResult} object (mlr3). Use \code{bmr$score(mlr3::msr("classif.auc"))}
+#'   to extract per-fold AUC values, or \code{\link{get_best_model_results}} for a summary.
 #' @export
-benchmark_sdm <- function(benchmarking_data, learners, dataset_type = "default", sample = FALSE) {
+benchmark_sdm <- function(benchmarking_data, learners,
+                           dataset_type = "default", sample = FALSE) {
     benchmarking_data$label <- as.factor(benchmarking_data$label)
+
     if (dataset_type == "default") {
-        # choose benchmarking metrics
-        ms <- list(mlr::auc)
+        if (sample) benchmarking_data <- .undersample(benchmarking_data)
+        task       <- mlr3::TaskClassif$new(id = "sdm", backend = benchmarking_data,
+                                            target = "label", positive = "1")
+        resampling <- mlr3::rsmp("cv", folds = 5)
 
-        # use undersampling
-        if (sample) {
-
-            task_default <- mlr::makeClassifTask(data = benchmarking_data, target = "label")
-            task <- mlr::undersample(task_default, rate = 1/8)
-
-        } else {
-            task <- mlr::makeClassifTask(data = benchmarking_data, target = "label")
-        }
-
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, models = TRUE)
-        return(bmr)
-
-    } else if (dataset_type == "checkerboard1" | dataset_type == "checkerboard2") {
-        rdesc <- mlr::makeResampleDesc("CV", iters = 2)
-        ms <- list(mlr::auc)
-        # assign spatial partitioning vector to split the data
-        blocking <- benchmarking_data$grp_checkerboard
+    } else if (dataset_type %in% c("checkerboard1", "checkerboard2")) {
+        blocking <- as.integer(as.character(benchmarking_data$grp_checkerboard))
         benchmarking_data$grp_checkerboard <- NULL
         if (sample) {
-            task_default <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
-            task <- mlr::undersample(task_default, rate = 1/8)
-        } else {
-
-            task <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
+            idx               <- .undersample_idx(benchmarking_data$label)
+            benchmarking_data <- benchmarking_data[idx, ]
+            blocking          <- blocking[idx]
         }
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc, models = TRUE)
-        return(bmr)
+        benchmarking_data$block <- blocking
+        task <- mlr3::TaskClassif$new(id = "sdm", backend = benchmarking_data,
+                                      target = "label", positive = "1")
+        task$col_roles$feature <- setdiff(task$col_roles$feature, "block")
+        task$col_roles$group   <- "block"
+        resampling             <- mlr3::rsmp("cv", folds = 2)
+
     } else if (dataset_type == "block") {
-        rdesc <- mlr::makeResampleDesc("CV", iters = 4)
-        ms <- list(mlr::auc)
-        blocking <- as.factor(benchmarking_data$grp)
+        blocking <- as.integer(as.factor(benchmarking_data$grp))
         benchmarking_data$grp <- NULL
         if (sample) {
-            task_default <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
-            task <- mlr::undersample(task_default, rate = 1/8)
-        } else {
-            task <- mlr::makeClassifTask(data = benchmarking_data, target = "label", blocking = blocking)
+            idx               <- .undersample_idx(benchmarking_data$label)
+            benchmarking_data <- benchmarking_data[idx, ]
+            blocking          <- blocking[idx]
         }
+        benchmarking_data$block <- blocking
+        task <- mlr3::TaskClassif$new(id = "sdm", backend = benchmarking_data,
+                                      target = "label", positive = "1")
+        task$col_roles$feature <- setdiff(task$col_roles$feature, "block")
+        task$col_roles$group   <- "block"
+        resampling             <- mlr3::rsmp("cv", folds = 4)
 
-        bmr <- mlr::benchmark(learners = learners, tasks = task, measures = ms, show.info = TRUE, resampling = rdesc, models = TRUE)
-        return(bmr)
+    } else {
+        stop("Unknown dataset_type: ", dataset_type)
     }
+
+    design <- mlr3::benchmark_grid(tasks = task, learners = learners, resamplings = resampling)
+    mlr3::benchmark(design, store_models = TRUE)
+}
+
+# -- internal helpers ---------------------------------------------------------
+
+.undersample <- function(data) {
+    data[.undersample_idx(data$label), ]
+}
+
+.undersample_idx <- function(label) {
+    pos_idx  <- which(label == "1")
+    neg_idx  <- which(label == "0")
+    keep_neg <- sample(neg_idx, min(length(neg_idx), length(pos_idx) * 8L))
+    c(pos_idx, keep_neg)
 }

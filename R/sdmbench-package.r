@@ -1,32 +1,26 @@
 #' @title sdmbench: Benchmark Species Distribution Models
 #'
-#' @description This package provides tools and functions to benchmark
-#' Species Distribution Models (SDMs). In addition to domain specific tools,
-#' a GUI is provided as an easier interface.
+#' @description Tools and functions to benchmark Species Distribution Models (SDMs)
+#' using modern R spatial (\pkg{terra}, \pkg{geodata}) and machine learning
+#' (\pkg{mlr3}, \pkg{mlr3learners}) packages. A Shiny GUI is provided for non-technical users.
 #'
-#' @section Download data:
+#' @section Typical workflow:
 #'
-#' A good starting point to explore the package is to run the
-#' \code{\link{run_sdmbench}} function. This will start a GUI that can guide
-#' you through several typical benchmarking workflows.
+#' \enumerate{
+#'   \item \code{\link{get_benchmarking_data}} — download GBIF occurrences and WorldClim
+#'     climate variables.
+#'   \item \code{\link{partition_data}} — apply spatial blocking to reduce autocorrelation.
+#'   \item \code{\link{benchmark_sdm}} — cross-validate a list of \pkg{mlr3} learners.
+#'   \item \code{\link{get_best_model_results}} — summarise AUC by learner.
+#'   \item \code{\link{plot_sdm_map}} — render static or interactive habitat suitability maps.
+#' }
 #'
-#' To obtain benchmarking data you can use
-#' \code{\link{get_benchmarking_data}}, followed by \code{\link{partition_data}}
-#' if you want to avoid spatial autocorrelation.
+#' For deep learning: \code{\link{prepare_dl_data}} → \code{\link{train_dl}} →
+#' \code{\link{evaluate_dl}} → \code{\link{get_dl_auc}} → \code{\link{plot_dl_map}}.
 #'
-#' @section Benchmark models:
+#' For MaxEnt (requires maxent.jar): \code{\link{evaluate_maxent}}.
 #'
-#' The output of the previous functions can be then fed into
-#' \code{\link{benchmark_sdm}} which runs the actual benchmarking.
-#'
-#' @section Evaluate results:
-#'
-#' You can inspect the model results by using the
-#' \code{\link{get_best_model_results}} function, or by plotting them on a map
-#'  with \code{\link{plot_sdm_map}}.
-#'
-#' There are several additional functions that you might find useful. Those are
-#' described in the package vignette.
+#' Start the GUI with \code{\link{run_sdmbench}}.
 #'
 #' @name sdmbench
 #' @docType package

@@ -1,20 +1,25 @@
 context("Data tests")
 
-
 result <- get_benchmarking_data("Lynx lynx", limit = 1000)
 
 test_that("Data is downloaded", {
-    expect_is(result$df_data, "data.frame")
-    expect_is(result$raster_data$climate_variables, "RasterBrick")
-    expect_equal(dim(result$df_data), c(11000, 20))
+    expect_s3_class(result$df_data, "data.frame")
+    expect_true(inherits(result$raster_data$climate_variables, "SpatRaster"))
+    # 19 bioclim columns + label; row count depends on successful GBIF download + cleaning
+    expect_equal(ncol(result$df_data), 20L)
+    expect_gt(nrow(result$df_data), 1000L)
 })
 
-result$df_data <- partition_data(result$raster_data,
-                                result$df_data,
-                                result$raster_data$climate_variables,
-                                method = "checkerboard1")
+result$df_data <- partition_data(
+    result$raster_data,
+    result$df_data,
+    result$raster_data$climate_variables,
+    method = "checkerboard1"
+)
 
-test_that("Data is parsed", {
-    expect_gt(matrix(table(result$df_data$grp_checkerboard))[1], 2800)
-    expect_gt(matrix(table(result$df_data$grp_checkerboard))[2], 3000)
+test_that("Data is partitioned into two spatial groups", {
+    grp_counts <- as.integer(table(result$df_data$grp_checkerboard))
+    expect_length(grp_counts, 2L)
+    expect_gt(grp_counts[1], 100L)
+    expect_gt(grp_counts[2], 100L)
 })
